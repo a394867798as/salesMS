@@ -1,0 +1,37 @@
+@charset "utf-8";
+/* CSS Document */
+body{margin:0; background-color:#fff;}
+li{ list-style:none}
+header{ margin:0 auto; height:34px; text-align:center; background-color:#EFEFEF; min-width:980px;}
+header h1{ color:#666;font-size:16px; line-height:15px; margin-left:100px; float:left; }
+.individual_info{ width:300px; float:left; margin-left:200px;  height:34px; border-left:5px solid #0C9;}
+.individual_info p{float:left; margin-left:50px; line-height:15px; font-size:12px; color:#999; cursor:default;}
+.individual_info a{ float:left; height:30px;margin-left:50px; margin-top:1px; line-height:30px; font-size:18px; color:#0c9; text-decoration:none; border:1px solid #0c9; border-radius:5px;}
+.individual_info a:hover{ color:#efefef; background-color:#0c9; border-color:#0c9;}
+section{ height:604px;background:rgb(172,172,186)}
+#main-inner{ width:100%; height:604px; background-image:url(../images/SINAMICS.jpg); background-repeat:no-repeat; background-position:center;
+ background-size:100% 100%;}
+section #loginBlock{ width:295px;height:460px; background:#fff; position:absolute;  top:100px; left:39%; padding:15px;z-index:2;
+border-radius:5px; box-shadow:2px 2px 5px  #666;}
+.loginfunc{ font-size:14px;text-align:center;color:#626262;height:47px;  line-height:47px;}
+.loginFormIpt{ position:relative; width:240px; height:42px;line-height:42px;margin:10px 0 0px 25px; padding-right:5px;
+background:url(../images/bg_v3.png); background-position:0 -352px;}
+.loginFormIpt .ico{ position:absolute; left:9px; top:13px; z-index:1;}
+.loginFormIpt-focus{ box-shadow:0 0 5px rgba(40,195,15,.5)}
+.ico-uid{ width:14px; height:16px; background:url(../images/bg_v3.png) -169px -64px;}
+.formIpt{ position:absolute; width:205px; padding:9px 0 10px; height:21px; top:1px;left:28px; color:#333; font-size:14px; font-weight:700; 
+border:none;font-family:Arial; line-height:21px;}
+a:focus,button:focus,input:focus{ outline:none;}
+.ico-pwd{width:14px; height:16px; background:url(../images/bg_v3.png) -193px -64px;}
+.loginFormBtn{ position:relative; width:245px; height:38px; margin:18px 0 0 25px;}
+.btn-login{ background:url(../images/bg_v3.png) 0 -208px; color:#fff; box-shadow:0 2px 5px rgba(0,94,21,.3);
+width:110px; height:38px; float:left;text-align:center; cursor:pointer; border:0; padding:0; font-size:14px; display:inline-block; vertical-align:baseline; line-height:38px;}
+.btn-login:hover{ background-position:0 -256px;}
+.btn-login:active{ background-position:0 -304px;}
+.btn-reg{background:url(../images/bg_v3.png) -117px -208px; color:#5c7a5c; box-shadow:0 2px 5px rgba(0,94,21,.3);
+width:110px; height:38px; float:right;text-align:center; cursor:pointer; border:0; padding:0; font-size:14px; display:inline-block; vertical-align:baseline; line-height:38px; text-decoration:none;}
+.btn-reg:hover{ background-position:-117px -256px; color:#000;}
+.btn-reg:active{ background-position:-117px -304px;}
+.ico-phone{width:14px; height:16px; background:url(../images/bg_v3.png) -220px -64px;}
+.ico-name{width:14px; height:16px; background:url(../images/bg_v3.png) -169px -64px;}
+#warnWord{position:relative; width:240px; height:42px;line-height:42px;margin:0 0 0px 25px;display:none; color:red; font-size:12px; font-family:Arial;}

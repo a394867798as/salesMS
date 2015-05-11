@@ -1,0 +1,194 @@
+@charset "utf-8";
+/* CSS Document */
+body{margin:0; background-color:#fff;}
+a, address, b, big, blockquote, body, center, cite, code, dd, del, div, dl, dt, em, fieldset, font, form, h1, h2, h3, h4, h5, h6, html, i, iframe, img, ins, label, legend, li, ol, p, pre, small, span, strong, u, ul, var{
+	margin:0; padding:0;
+}
+li{ list-style:none}
+header{ margin:0 auto; height:34px; text-align:center; background-color:#EFEFEF; min-width:1210px;}
+header h1{ color:#666;font-size:16px; line-height:34px; margin-left:100px; float:left; }
+.individual_info{ width:300px; float:left; margin-left:200px;  height:34px; border-left:5px solid #0C9;}
+.individual_info p{float:left; margin-left:50px; height:30px; line-height:34px; font-size:12px; color:#999; cursor:default;}
+.individual_info a{ float:left; height:30px;margin-left:50px; margin-top:1px; line-height:30px; font-size:18px; color:#0c9; text-decoration:none; border:1px solid #0c9; border-radius:5px;}
+.individual_info a:hover{ color:#efefef; background-color:#0c9; border-color:#0c9;}
+#container{background-color:#f5f5f5; position:relative; min-width:1210px;}
+#container .w{ width:1210px; margin:0 auto;}
+#content{ padding-left:100px; padding-top:20px; display:block;}
+#content:after {
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+#sub{width:120px;position:relative; float:left;left:-100px; }
+#sub dl{ margin-bottom:20px;}
+#sub dt{ font:Verdana, Geneva, sans-serif; font-size:15px; font-weight:bold; margin-bottom:10px;}
+#sub dd{  margin:0 auto 10px 10px;}
+#sub dd a{ text-decoration:none;font-family:Verdana, Geneva, sans-serif; font-size:13px; }
+.listcolor{color:#666;}
+#sub dd a:hover, .active{color:#0c9; text-decoration:underline;}
+
+.clear{ clear:both;}
+
+#main{ float:left; position:relative; margin-left:-120px;}
+.ly-c-0{ background-color:#FFF; border-radius:75px 0 0 75px; min-width:820px; height:125px; }
+#user_info{ overflow:hidden; height:125px; }
+.info_icol{ position:relative; float:left; margin:30px 0 0 50px;}
+#user_info .u-name{ font-size:18px; color:#333; font-family:Arial; font-weight:bold; margin-bottom:10px;}
+#user_info .u-position{ font-size:14px; color:#09c; font-family:Arial; }
+.info_rocl{ float:left; margin-left:50px; padding-left:50px; border-left:1px dashed #000; height:125px; padding-top:30px;}
+.info_rocl li{ float:left; margin-right:30px; margin-top:20px;}
+.info_rocl li a{ text-decoration:none; font-size:16px; color:#666;}
+.info_rocl li a:hover,.info_rocl li a em{ color:#0c9;}
+.info_rocl li a em{ margin-left:10px;}
+
+.contractinput{ min-width:1000px; background-color:#fff; margin-left:10px;}
+
+.proinput{ width:1000px; min-height:500px; background-color:#fff; margin-left:10px; margin-right:30px; margin-bottom:20px; padding:10px 0 0 10px;}
+.item{  display: block;margin-bottom: 20px;line-height: 18px; height:18px;}
+.proinput h1{ font-size:18px; color:#0c9;}
+.infoForm{ margin:20px 0 0 50px; width:600px; float:left;}
+.item em,#contract_top span,#contract_buy  span{ font-family:Arial; color:red; font-size:20px; float:left;}
+.item span{font-size:15px; color:#666; float:left;}
+.item input { float:left;height:20px;}
+#pro_name{ line-height:15px; width:100px;}
+.proinput:after {
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+.form1{ margin-left:100px;}
+.form1 a{ text-decoration:none; color:#333;  background-color: #f5fbef;}
+ .btn-submit{   border-radius: 2px; display: inline-block;height: 18px;line-height: 18px;border: 1px solid #bfd6af;padding: 0px 14px 0px;background-color: #f5fbef; cursor:pointer; height:30px;}
+.waringText{color:#F00;}
+.text{ font-size:12px; color:#CCC; margin-left:5px; float:left;}
+#waringInformation{ float:left; height:200px; width:200px; border-left:1px  dashed #333; padding:100px 0 0 30px; color:#090; font-weight:bold; font-size:16px;}
+.search{ margin:0 auto;}
+
+.search{width:351px;height:40px; position:relative; border:1px solid #0c9;}
+.search .text{position:absolute;top:0px;left:20px;width:230px;height:40px;line-height:30px;background:none;border:none;font-size:13px;
+color:#666;outline:none;}
+.search .btn{ position:absolute;top:0;right:0;width:42px; height:40px; background:#0c9; border:none; cursor:pointer;}
+.outForm{margin:20px 5px 0 10px; min-width:900px; min-height:120px;}
+.outForm h2{ border-bottom:1px solid #0c9;}
+
+.outpro_info{ font-size:12px; background-color:#CCC; width:240px; margin:5px 6px 0 0 ; height:170px; float:left; box-shadow: 0 0 5px #999;}
+.outpro_info input{ width:auto; background:#fff;}
+.outpro_info .pro_name{ width:60px;}
+.prompting{ font-size:16px;}
+.outForm ul:after{
+	 content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+.outForm:after{
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+.contractinput{ margin:0 auto;}
+.contractinput:after{
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+.contractinput h1{ font-size:18px;}
+#contract_top{ margin:0px;}
+#contract_top table{ margin-left:730px;}
+#contract_customer { margin-top:20px;}
+#contract_customer:after{
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+#contract_sale{ margin:20px 0 0 20px; float:left; width:450px}
+#contract_sale h2{ font-size:16px;}
+#contract_sale p{ margin-top:5px; font-size:14px;}
+
+#contract_buy{ margin:20px 0 0 20px; float:left; width:550px;}
+#contract_buy h2{font-size:16px;}
+#contract_buy td{font-size:14px;}
+#contract_buy .waringText{ font-size:10px; float:right;}
+#contract_pro{ margin-top:20px; width:1000px;}
+#contract_pro:after{
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+#contract_pro{ margin:20px auto;}
+.contract_pro ul{ margin-top:1px;}
+.contract_pro_list li{ float:left; }
+.contract_pro_list li input{ border:1px solid #ccc; height:25px;}
+.contract_pro_list a{position:absolute; width:50px; height:26px;  text-decoration:none; border:1px solid #ccc; color:red; background-color:#ccc; text-align:center; line-height:30px;}
+#insertType{
+	position:fixed;
+	z-index:100;
+	width:100%;
+	height:100%;
+	background-color:#000;
+	padding:50px 50px 0px 100px;
+	opacity:0.95;
+	filter:alpha(opacity=95);
+}
+#goback{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	margin:11px auto 20px 11px;
+	width:50px;
+	
+}
+#goback a{
+	color:#999;
+	text-decoration:none;
+}
+#goback a:hover{
+	color:#c30;
+}
+#close{
+	position:absolute;
+	text-align:center;
+	width:3%;
+	left:1050px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:30px;
+	border:#333 2px solid;
+}
+#close a{
+	color:#999;
+	text-decoration:none;
+}
+#close a:hover{
+	color:#c30;
+}
+
+#contract_button{ width:1000px; text-align:center; margin-top:50px; margin-bottom:50px;}
+#contract_button input{ height:50px; font-size:20px; cursor:pointer;}
+#contract_button:after{
+	 content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
