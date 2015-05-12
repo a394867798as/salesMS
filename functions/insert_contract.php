@@ -1,6 +1,16 @@
 <?php
 include '../include_fns.php';
 session_start();
-print_r($_SESSION);
+
+display_html_top();
+
+
+display_loading();
+
 $contract_id = insert_contract($_POST);
+
+if($contract_id !=""){
+	header("refresh:3;url=../?action=chakanhetong&state=all&contractid=".$contract_id);
+}
+do_html_footer();
 ?>

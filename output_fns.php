@@ -199,7 +199,7 @@ function display_nav_left($nav,$action = ""){
 	}
 }
 //初始化页面内容
-function display_main_all($username, $name,$action ="",$position, $state){
+function display_main_all($username, $name,$action ="",$position, $state, $contractid = ""){
 	//如果action为空，则为初始化页面
 	switch ($action){
 		case "":
@@ -208,11 +208,18 @@ function display_main_all($username, $name,$action ="",$position, $state){
 		case "发布合同":
 			display_submit_contract($name,$position,$username,$state);
 			break;
+		case "fabuhetong":
+			display_submit_contract($name,$position,$username,$state);
+			break;
 		case "录入产品":
 			display_input_proinfo($action,$state);
 			break;
 		case "查看产品":
 			display_select_proinfo($action,$state);
+			break;
+		case "查看合同";
+			
+			display_select_contract($action,$state,$contractid);
 			break;
 	}
 }
@@ -610,5 +617,55 @@ function insertTypeForm($state){
 </div>
 </div>
     <?php
+}
+function display_html_top(){
+	?>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加合同中。。。。</title>
+<link href="../css/lonading.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>添加合同中。。。。。</h1>
+	<?php 
+}
+function display_loading(){
+	?>
+
+
+	<div class='loader'>
+	  <div class='blob'></div>
+	  <div class='blob'></div>
+	  <div class='blob'></div>
+	  <div class='blob'></div>
+	  <div class='blob'></div>
+	  <div class='blob'></div>
+	  <div class='blob'></div>
+	</div>
+
+	<?php 
+}
+function display_select_contract($action,$state = "",$contractid = ""){
+	
+	if(!empty($contractid) && $state == "all"){
+		display_contract($contractid,$state);
+		
+	}
+	if(!empty($state) ){
+		
+		display_state_contract($state);
+		echo 2;
+	}
+	if(empty($state) && empty($contractid)){
+		
+		display_all_contract();	
+		
+	}
+}
+function display_all_contract(){
+	?>
+	
+	<?php 
 }
 ?>

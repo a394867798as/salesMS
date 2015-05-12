@@ -6,6 +6,7 @@ checkSessionUsernameNo();
 //create short variable names
 @$action = $_REQUEST['action'];
 @$state = $_GET['state'];
+@$contractid = $_GET['contractid'];
 
 //判断
 if($action === "logout"){
@@ -23,6 +24,6 @@ if($action == "发布合同"){
 	insertTypeForm($state);
 }
 
-display_center_content($_SESSION['username'], $_SESSION['name'],$action,$_SESSION['position'],$state);
+display_center_content($_SESSION['username'], $_SESSION['name'],$action,$_SESSION['position'],$state,$contractid);
 do_html_footer();
 ?>

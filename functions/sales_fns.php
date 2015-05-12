@@ -102,8 +102,9 @@ function insert_contract($post){
 	$contract_count = round($contract_count,2);
 	$accountId = $_SESSION['accountId'];
 	
-	if($contract_id === ""){
-		header("Location:../?action=发布合同");
+	if($contract_id === "" || !isset($contract_id)){
+		
+		header("refresh:5;url=../?action=fabuhetong");
 	}
 	$conn->autocommit(FALSE);//关闭系统自动提交事务
 	
@@ -127,7 +128,6 @@ function insert_contract($post){
 	
 		if(!$result ){
 			return false;
-			echo 0;
 		}
 	
 	}
@@ -142,7 +142,6 @@ function insert_contract($post){
 			$result = $conn->query($query);
 			if(!$result){
 				return false;
-				echo 1;
 			}
 		}
 	}
@@ -152,7 +151,7 @@ function insert_contract($post){
 	
 	$result = $conn->query($query) or die($conn->error);
 	$customer_array = $result->fetch_assoc() or die($conn->error);
-	print_r($customer_array);
+	
 	$customer_id = $customer_array['customer_id'];
 	//检测合同号
 	$query = "select contract_id from contract
@@ -170,7 +169,6 @@ function insert_contract($post){
 	$result = $conn->query($query) or die($conn->error);
 	if(!$result){
 		return false;
-		echo 2;
 	}
 	
 	
@@ -181,7 +179,6 @@ function insert_contract($post){
 	
 	if(empty($result->num_rows)){
 		return false;
-		echo 3;
 	}else{
 	
 		$contract_object = $result->fetch_object();
