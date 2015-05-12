@@ -102,7 +102,7 @@ $(function(){
 			}else{
 				$extension.val("0.00");
 			}
-			$contract_count.val(celactionList($extension));
+			$contract_count.val(celactionList($contractProListUl.find(".extension")));
 		});
 		$contractUprice.blur(function(){
 			
@@ -127,7 +127,7 @@ $(function(){
 			}else{
 				$extension.val("0.00");
 			}
-			$contract_count.val(celactionList($extension));
+			$contract_count.val(celactionList($contractProListUl.find(".extension")));
 		});
 		$contractType.blur(function(){
 			var $type = $(this).val();
