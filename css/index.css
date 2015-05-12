@@ -192,3 +192,38 @@ color:#666;outline:none;}
   clear: both;
   visibility: hidden;
 }
+
+.select-contract{ width:1000px; min-height:500px; background-color:#fff; margin-left:10px; margin-right:30px; margin-bottom:20px; padding:10px 0 0 10px;}
+.select-contract:after{
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+.select-contract h2{font-size:18px; color:#0c9;}
+.outContract{ margin:0 auto; }
+.contract_list{ width:900px; position:relative; margin:0 auto;}
+.contract-box{ margin-top:50px ; background-color:#f6f6f6; border:1px solid #ddd; border-radius:4px 4px 0 0;}
+.contract-top{ margin:10px 50px auto 50px;color:#666; font-size:14px;}
+.contract-name{z-index:100; cursor:pointer; color:blue;}
+.contract-name:hover{ color:#C60; text-decoration:underline;}
+.contract-address{ width:130px; position:absolute;  left:250px; top:53px; border:1px solid #ddd; padding:5px; color:#000; z-index:100; cursor:auto; display:none;}
+.contract-pro{ padding:15px; margin:0 auto; border:1px solid #ddd; border-radius:0 0 4px 4px;}
+.contract-pro h1{ font-size:15px;}
+.contract-pro-list{ margin-right:250px; margin-top:10px; float:left; width:300px;}
+.contract-pro-list-all{border:1px solid #ddd; border-radius:4px; width:200px; margin-bottom:10px;}
+.contract-pro:after{
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+.contract-button{ width:200px; float:left;}
+.contract-button-list{background: -webkit-linear-gradient(to bottom,#f7f8fa,#e7e9ec);  background: -webkit-linear-gradient(top,#f7f8fa,#e7e9ec); height:30px;   background: #eff0f3;  width:150px; text-align:center; line-height:30px; border:1px solid #f6f6f6;
+border-color: #adb1b8 #a2a6ac #8d9096; border-radius:2px; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; cursor:pointer; }
+.contract-button-list a{ color:#000; text-decoration:none;}
+.contract-button-list:hover{ background-color:#e7e9ec;}

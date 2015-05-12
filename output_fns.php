@@ -665,7 +665,75 @@ function display_select_contract($action,$state = "",$contractid = ""){
 }
 function display_all_contract(){
 	?>
-	
+	<div class="select-contract">
+     <h2>查看合同</h2>
+     <div class="search">
+       <form method="post" action="#" onSubmit="return false" name="form1">
+           <input type="text"  placeholder="合同号 | 客户名称" id="searchpro_id" class="text" title="产品型号"  required/>
+           <input type="submit" value="GO" class="btn" id="searchpro_butn"  />
+       </form>
+     </div>
+     <div class="outContract">
+     <!-- 合同列表开始 -->
+      <div class="contract_list">
+      <div class="contract-box">
+       <div class="contract-top">
+        <table>
+         <tr>
+          <td width="110px">已签合同</td>
+          <td width="90px">合同总额</td>
+          <td width="100px">送货至</td>
+          <td width="500px" align="right">订单编号</td>
+         </tr>
+         <tr>
+          <td style="color:#272727;">2015年5月6日</td>
+          <td style="color:#272727;"> ￥ 106.40</td>
+          <td> 
+          <div class="contract-name">
+          <span>赵广来</span>^
+          <span class="contract-address">
+           <ul>
+            <li><b>赵广来</b></li>
+            <li>北京市朝阳区启阳路4号中轻大厦B座2单元602室</li>
+            <li>电话:13001070017</li>
+           </ul>
+          </span>
+          </div>
+          </td>
+          <td align="right">Z1505-01</td>
+         </tr>
+        </table>
+       </div>
+      </div>
+       <div class="contract-pro">
+        <h1>已签订合同，等待付款</h1>
+        <div class="contract-pro-list">
+         <div class="contract-pro-list-all">
+         <table>
+          <tr>
+			<td align="right">产品型号:</td>
+			<td><span style="font-size:14px; color:blue; cursor:pointer;" >M2D068-DF</span></td>
+		  </tr>
+		  <tr>
+		   <td align="right">产品名称:</td>
+		   <td><span style="color:#666; font-size:14px;">风机</span></td>
+		  </tr>
+		  <tr>
+		   <td align="right">数量:</td>
+		   <td>2个</td>
+		  </tr>
+		 </table>
+         </div>
+        </div>
+        <div class="contract-button">
+         <div class="contract-button-list"> 
+           <a href="#">查看合同详情</a>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
 	<?php 
 }
 ?>
