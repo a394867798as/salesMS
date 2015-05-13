@@ -229,12 +229,16 @@ function get_contract_list($contract_id="", $state="", $time=6){
 				 where date > '".$selecttime."'
 				 and contract_id = '".$contract_id."'";
 	}
+	return get_contract_query($query,$state);
 	
+	
+}
+function get_contract_query($var,$state = ""){
 	$contract_array_list = array();
 	//连接数据库
 	$conn = db_connect();
 	
-	$result = $conn->query($query);
+	$result = $conn->query($var);
 	
 	while($contract_array = $result->fetch_assoc()){
 		$contract_id = $contract_array['contract_id'];
@@ -265,13 +269,12 @@ function get_contract_list($contract_id="", $state="", $time=6){
 				$pro_array[$pro_key] = $pro_value;
 			}
 			$contract_array['pro_list'][$pro_number] = $pro_array;
-			$pro_number ++; 
+			$pro_number ++;
 		}
 		$contract_array_list[$contract_id] = $contract_array;
 	}
 	$conn->close();
 	return $contract_array_list;
-	
 }
 function display_contract_state($state){
 	switch ($state){
@@ -288,8 +291,19 @@ function display_contract_state($state){
 			return "产品已经出库";
 			break;
 		case 4;
-		return "发票已开具";
-		break;
+			return "发票已开具";
+			break;
+		case 5;
+		 	return "<span style='color:#ccc;'>此项已经取消</span>";
+		 	break;
+	}
+}
+function get_search_value($value, $search = ""){
+	if($search == ""){
+		return $value;
+	}else{
+		$value = str_ireplace($search, "<span style='color:red;'>".ucwords($search)."</span>", $value);
+		return $value;
 	}
 }
 ?>

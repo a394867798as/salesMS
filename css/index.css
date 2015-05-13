@@ -138,7 +138,7 @@ color:#666;outline:none;}
 
 #contract_pro{ margin:20px auto;}
 .contract_pro ul{ margin-top:1px;}
-.contract_pro_list li{ float:left;text-align:center; border:1px solid #ccc; height:25px; line-height:25px; }
+.contract_pro_list li{ float:left; }
 .contract_pro_list li input{ border:1px solid #ccc; height:25px;}
 .contract_pro_list a{position:absolute; width:50px; height:26px;  text-decoration:none; border:1px solid #ccc; color:red; background-color:#ccc; text-align:center; line-height:30px;}
 .contract_pro_list:after{
@@ -215,9 +215,10 @@ color:#666;outline:none;}
 .contract_list{ width:900px; position:relative; margin:0 auto;}
 .contract-box{ margin-top:50px ; background-color:#f6f6f6; border:1px solid #ddd; border-radius:4px 4px 0 0;}
 .contract-top{ margin:10px 50px auto 50px;color:#666; font-size:14px;}
-.contract-name{z-index:100; cursor:pointer; color:blue;}
+.contract-name{z-index:100; cursor:pointer; color:blue; position:absolute; margin:0px; padding:0px; top:35px;}
 .contract-name:hover{ color:#C60; text-decoration:underline;}
-.contract-address{ width:130px; position:absolute;  left:250px; top:53px; border:1px solid #ddd; padding:5px; color:#000; z-index:100; cursor:auto; display:none;}
+.contract-address{ width:180px; position:absolute;  border:1px solid #ddd; padding:5px; color:#000; z-index:100; cursor:auto; display:none; opacity:1;filter:alpha(opacity=100); background-color:#FBFBFB;}
+.contract-address li{ margin-top:5px;}
 .contract-pro{ padding:15px; margin:0 auto; border:1px solid #ddd; border-radius:0 0 4px 4px;}
 .contract-pro h1{ font-size:15px; color:green;}
 .contract-pro-list{ margin-right:250px; margin-top:10px; float:left; width:300px;}

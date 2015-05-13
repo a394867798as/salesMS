@@ -480,7 +480,7 @@ function display_submit_contract($name,$position,$username,$state = ""){
       
       </li>
      <li style="width:300px;">
-     <input type="text" name="type_<?php echo $i; ?>" id="type_<?php echo $i; ?>" class="type" required style="width:250px;" />
+     <input type="text" name="type_<?php echo $i; ?>" id="type_<?php echo $i; ?>" class="type" required style="width:246px;" />
      <a href="javascript:;" ></a></li>
      <li><input type="text" name="unit_<?php echo $i; ?>" id="unit_<?php echo $i; ?>" class="unit" required style="width:100px;" /></li>
      <li>
@@ -512,7 +512,7 @@ function display_submit_contract($name,$position,$username,$state = ""){
       
       </li>
      <li style="width:300px;">
-     <input type="text" name="type_<?php echo $i; ?>" id="type_<?php echo $i; ?>" class="type"  style="width:250px;" />
+     <input type="text" name="type_<?php echo $i; ?>" id="type_<?php echo $i; ?>" class="type"  style="width:246px;" />
      <a href="javascript:;" ></a></li>
      <li><input type="text" name="unit_<?php echo $i; ?>" id="unit_<?php echo $i; ?>" class="unit"  style="width:100px;" /></li>
      <li>
@@ -647,7 +647,7 @@ function display_loading(){
 	<?php 
 }
 function display_select_contract($action,$state = "",$contractid = ""){
-   
+    echo "<script src='js/select_contract.js'></script>";
 	if($contractid != ""){
 		display_contract($contractid);
 	}elseif($contractid != "" && $state == "all"){
@@ -674,90 +674,93 @@ function display_all_contract(){
      <h2>查看合同</h2>
      <div class="search">
        <form method="post" action="#" onSubmit="return false" name="form1">
-           <input type="text"  placeholder="合同号 | 客户名称" id="searchpro_id" class="text" title="产品型号"  required/>
-           <input type="submit" value="GO" class="btn" id="searchpro_butn"  />
+           <input type="text"  placeholder="合同号 | 客户名称" id="searchcontract_id" class="text" title="合同号或着客户名称"  required/>
+           <input type="submit" value="GO" class="btn" id="searchcontract_butn"  />
        </form>
      </div>
      <div class="outContract">
      <!-- 合同列表开始 -->
-     <?php 
-     foreach ($contract_array_list as $key => $value){
-     	
-     ?>
-      <div class="contract_list">
-      <div class="contract-box">
-       <div class="contract-top">
-        <table>
-         <tr>
-          <td width="110px">已签合同</td>
-          <td width="90px">合同总额</td>
-          <td width="100px">送货至</td>
-          <td width="500px" align="right">订单编号</td>
-         </tr>
-         <tr>
-          <td style="color:#272727;"><?php echo date("Y年m月d日",strtotime($value['date'])); ?></td>
-          <td style="color:#272727;"> ￥ <?php echo $value['amount']; ?></td>
-          <td> 
-          <div class="contract-name">
-          <span><?php echo $value['name']; ?></span>^
-          <span class="contract-address">
-           <ul>
-            <li><b><?php echo $value['name']; ?></b></li>
-            <li><?php echo $value['address']; ?></li>
-            <li>电话:<?php echo $value['tell']; ?></li>
-           </ul>
-          </span>
-          </div>
-          </td>
-          <td align="right" style="color:#093;"><?php echo $value['contract_id']; ?></td>
-         </tr>
-        </table>
-       </div>
-      </div>
-      
-       <div class="contract-pro">
-        
-        <div class="contract-pro-list">
-         <?php 
-        foreach ($value['pro_list'] as $pro_key => $pro_value){
-      	 ?>
-         <div class="contract-pro-list-all">
-         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
-         <table>
-          <tr>
-			<td align="right">产品型号:</td>
-			<td ><span style="font-size:14px; color:blue; cursor:pointer;" ><?php echo $pro_value['pro_id']; ?></span></td>
-		  </tr>
-		  <tr>
-		   <td align="right">产品名称:</td>
-		   <td><span style="color:#666; font-size:14px;"><?php echo $pro_value['name']; ?></span></td>
-		  </tr>
-		  <tr>
-		   <td align="right">数量:</td>
-		   <td><?php echo $pro_value['quantity'].$pro_value['unit'] ?></td>
-		  </tr>
-		 </table>
-         </div>
-         <?php 
-        }
-         ?>
-        </div>
-        <div class="contract-button">
-         <div class="contract-button-list"> 
-           <a href='http://127.0.0.1/salesMS/?action=查看合同&&contractid=<?php echo $key; ?>'>查看合同详情</a>
-         </div>
-        </div>
-       </div>
-      </div>
-     <!-- -->
-     <?php 
-     }
+     <?php
+     display_contract_array($contract_array_list);
      ?>
      </div>
     </div>
 	<?php 
 }
-
+//列出数组项
+function display_contract_array($contract_array_list, $search = ""){
+	foreach ($contract_array_list as $key => $value){
+	
+		?>
+	      <div class="contract_list">
+	      <div class="contract-box">
+	       <div class="contract-top">
+	        <table>
+	         <tr>
+	          <td width="110px">已签合同</td>
+	          <td width="90px">合同总额</td>
+	          <td width="200px">送货至</td>
+	          <td width="400px" align="right">合同编号</td>
+	         </tr>
+	         <tr>
+	          <td style="color:#272727;"><?php echo date("Y年m月d日",strtotime($value['date'])); ?></td>
+	          <td style="color:#272727;"> ￥ <?php echo $value['amount']; ?></td>
+	          <td> 
+	          <div class="contract-name">
+	          <span style="margin-bottom:5px;"><?php echo get_search_value($value['company_name'],$search);?></span>^
+	          <span class="contract-address">
+	           <ul>
+	            <li><b><?php echo $value['name']; ?></b></li>
+	            <li><?php echo $value['address']; ?></li>
+	            <li>电话:<?php echo $value['tell']; ?></li>
+	           </ul>
+	          </span>
+	          </div>
+	          </td>
+	          <td align="right" style="color:#093;"><?php echo get_search_value($value['contract_id'],$search); ?></td>
+	         </tr>
+	        </table>
+	       </div>
+	      </div>
+	      
+	       <div class="contract-pro">
+	        
+	        <div class="contract-pro-list">
+	         <?php 
+	        foreach ($value['pro_list'] as $pro_key => $pro_value){
+	      	 ?>
+	         <div class="contract-pro-list-all">
+	         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
+	         <table>
+	          <tr>
+				<td align="right">产品型号:</td>
+				<td ><span style="font-size:14px; color:blue; cursor:pointer;" ><?php echo $pro_value['pro_id']; ?></span></td>
+			  </tr>
+			  <tr>
+			   <td align="right">产品名称:</td>
+			   <td><span style="color:#666; font-size:14px;"><?php echo $pro_value['name']; ?></span></td>
+			  </tr>
+			  <tr>
+			   <td align="right">数量:</td>
+			   <td><?php echo $pro_value['quantity'].$pro_value['unit'] ?></td>
+			  </tr>
+			 </table>
+	         </div>
+	         <?php 
+	        }
+	         ?>
+	        </div>
+	        <div class="contract-button">
+	         <div class="contract-button-list"> 
+	           <a href='http://127.0.0.1/salesMS/?action=查看合同&&contractid=<?php echo $key; ?>'>查看合同详情</a>
+	         </div>
+	        </div>
+	       </div>
+	      </div>
+	     <!-- -->
+	     <?php 
+	     }
+}
 function display_contract($contractid,$state = ""){
 	$contract_array_list = get_contract_list($contractid);
 	$contract_array = $contract_array_list[$contractid];
