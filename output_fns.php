@@ -138,7 +138,7 @@ function out_account_info(){
 	}
 }
 //输出index中心内容
-function display_center_content($username, $name,$action = "",$position,$state = "", $contractid=""){
+function display_center_content($username, $name,$action = "",$position,$state = ""){
 	$nav = array();
 	$nav['合同中心'] = (array('发布合同','查看合同','修改客户信息'));
 	$nav['产品中心'] = (array('录入产品','查看产品'));
@@ -163,7 +163,7 @@ function display_center_content($username, $name,$action = "",$position,$state =
        <?php display_nav_left($nav, $action); ?>
       </div>
       <div id="main">
-       <?php  display_main_all($username, $name,$action ,$position,$state,$contractid); ?>
+       <?php display_main_all($username, $name,$action ,$position,$state); ?>
       </div>
   </div>
  </div>
@@ -218,6 +218,7 @@ function display_main_all($username, $name,$action ="",$position, $state, $contr
 			display_select_proinfo($action,$state);
 			break;
 		case "查看合同";
+			
 			display_select_contract($action,$state,$contractid);
 			break;
 	}
@@ -642,33 +643,27 @@ function display_loading(){
 	  <div class='blob'></div>
 	  <div class='blob'></div>
 	</div>
-</body>
-</html>
+
 	<?php 
 }
 function display_select_contract($action,$state = "",$contractid = ""){
-   
-	if($contractid != ""){
-		display_contract($contractid);
-	}elseif($contractid != "" && $state == "all"){
+	
+	if(!empty($contractid) && $state == "all"){
 		display_contract($contractid,$state);
 		
 	}
-	if($state != "" ){
+	if(!empty($state) ){
 		
 		display_state_contract($state);
-	
+		echo 2;
 	}
-	if($state == "" && $contractid == ""){
+	if(empty($state) && empty($contractid)){
+		
 		display_all_contract();	
 		
 	}
-	
 }
 function display_all_contract(){
-	
-	$contract_array_list = get_contract_list();
-	
 	?>
 	<div class="select-contract">
      <h2>查看合同</h2>
@@ -680,10 +675,6 @@ function display_all_contract(){
      </div>
      <div class="outContract">
      <!-- 合同列表开始 -->
-     <?php 
-     foreach ($contract_array_list as $key => $value){
-     	
-     ?>
       <div class="contract_list">
       <div class="contract-box">
        <div class="contract-top">
@@ -695,191 +686,54 @@ function display_all_contract(){
           <td width="500px" align="right">订单编号</td>
          </tr>
          <tr>
-          <td style="color:#272727;"><?php echo date("Y年m月d日",strtotime($value['date'])); ?></td>
-          <td style="color:#272727;"> ￥ <?php echo $value['amount']; ?></td>
+          <td style="color:#272727;">2015年5月6日</td>
+          <td style="color:#272727;"> ￥ 106.40</td>
           <td> 
           <div class="contract-name">
-          <span><?php echo $value['name']; ?></span>^
+          <span>赵广来</span>^
           <span class="contract-address">
            <ul>
-            <li><b><?php echo $value['name']; ?></b></li>
-            <li><?php echo $value['address']; ?></li>
-            <li>电话:<?php echo $value['tell']; ?></li>
+            <li><b>赵广来</b></li>
+            <li>北京市朝阳区启阳路4号中轻大厦B座2单元602室</li>
+            <li>电话:13001070017</li>
            </ul>
           </span>
           </div>
           </td>
-          <td align="right" style="color:#093;"><?php echo $value['contract_id']; ?></td>
+          <td align="right">Z1505-01</td>
          </tr>
         </table>
        </div>
       </div>
-      
        <div class="contract-pro">
-        
+        <h1>已签订合同，等待付款</h1>
         <div class="contract-pro-list">
-         <?php 
-        foreach ($value['pro_list'] as $pro_key => $pro_value){
-      	 ?>
          <div class="contract-pro-list-all">
-         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
          <table>
           <tr>
 			<td align="right">产品型号:</td>
-			<td ><span style="font-size:14px; color:blue; cursor:pointer;" ><?php echo $pro_value['pro_id']; ?></span></td>
+			<td><span style="font-size:14px; color:blue; cursor:pointer;" >M2D068-DF</span></td>
 		  </tr>
 		  <tr>
 		   <td align="right">产品名称:</td>
-		   <td><span style="color:#666; font-size:14px;"><?php echo $pro_value['name']; ?></span></td>
+		   <td><span style="color:#666; font-size:14px;">风机</span></td>
 		  </tr>
 		  <tr>
 		   <td align="right">数量:</td>
-		   <td><?php echo $pro_value['quantity'].$pro_value['unit'] ?></td>
+		   <td>2个</td>
 		  </tr>
 		 </table>
          </div>
-         <?php 
-        }
-         ?>
         </div>
         <div class="contract-button">
          <div class="contract-button-list"> 
-           <a href='http://127.0.0.1/salesMS/?action=查看合同&&contractid=<?php echo $key; ?>'>查看合同详情</a>
+           <a href="#">查看合同详情</a>
          </div>
         </div>
        </div>
       </div>
-     <!-- -->
-     <?php 
-     }
-     ?>
      </div>
     </div>
 	<?php 
-}
-
-function display_contract($contractid,$state = ""){
-	$contract_array_list = get_contract_list($contractid);
-	$contract_array = $contract_array_list[$contractid];
-?>
-<div class="contractinput">
- <h1 align="center">工业备件合同</br>CONTRACT</h1>
- 
- <div class="contractForm">
-  <!-- 头部开始 -->
-  <div id="contract_top">
-   <table>
-    <tr>
-     <td align="right"><span>*</span>合同号: </td>
-     <td style="font-family:Arial; text-decoration:underline;"><?php echo $contractid; ?></td>
-    </tr>
-    <tr>
-     <td align="right"><span>*</span>签订日期:</td>
-     <td><?php echo date("Y年m月d日",strtotime($contract_array['date'])); ?></td>
-    </tr>
-    <tr>
-     <td align="right">签定地点:</td>
-     <td style="text-decoration:underline; color:#333; font-size:14px;">&nbsp;&nbsp;北京&nbsp;&nbsp;</td>
-    </tr>
-   </table>
-  </div>
-  <div id="contract_customer">
-   <div id="contract_sale">
-    <h2>卖方</h2>
-    <p><?php echo siswell_ifomation("name") ?></p>
-    <p>地址: <?php echo siswell_ifomation("address") ?></p>
-    <p>电话: <?php echo siswell_ifomation("tell") ?></p>
-    <p>传真: <?php echo siswell_ifomation("fax")?></p>
-    <p>联系人: <?php echo $_SESSION['name']; ?></p>
-   </div>
-   <div id="contract_buy">
-    <h2>买方</h2>
-    <table cellpadding="0" cellspacing="2">
-     <tr>
-      
-      <td>客户名称:</td>
-      <td ><span style="color:#066; font-size:16px;background-color:yellow;" ><?php echo $contract_array['company_name'] ?></span></td>
-      
-     </tr>
-     <tr>
-      <td>地址:</td>
-      <td><span style="color:#066; font-size:16px;background-color:yellow;"><?php echo $contract_array['address'] ?></span></td>
-     </tr>
-     <tr>
-      <td>联系电话:</td>
-      <td><span style="color:#000; font-size:14px;background-color:yellow;"><?php echo $contract_array['tell'] ?></span></td>
-     </tr>
-     <tr>
-      <td>传真:</td>
-      <td><span style="color:#000; font-size:14px;"><?php echo $contract_array['fax'] ?></span></td>
-     </tr>
-     <tr>
-      <td>联系人:</td>
-      <td><span style="color:#000; font-size:14px;background-color:yellow;"><?php echo $contract_array['name'] ?></span></td>
-     </tr>
-     <tr>
-      <td>收票地址:</td>
-      <td><span style="color:#ccc; font-size:12px;">
-      <?php echo $contract_array['billing_address'] == "" ?"同收货地址":$contract_array['billing_address']; ?></span></td>
-     </tr>
-    </table>
-   </div>
-  </div>
-  <div id="contract_pro">
-   <table cellpadding="0" cellspacing="0">
-    <tr>
-     <td width="50px" align="center">序号</td>
-     <td width="300px" align="center">型号</td>
-     <td width="100px" align="center">单位</td>
-     <td width="100px" align="center">交货期</td>
-     <td width="100px" align="center">数量</td>
-     
-     <td width="150px" align="center">单价</td>
-     <td width="150px" align="center">总价</td>
-    </tr>
-   </table>
-   <input type="hidden" name="pro_count" id="pro_count" />
-   
-   
-   <?php
-    $i = 1;
-    foreach ($contract_array['pro_list'] as $key => $value){
-    	
-   ?>
-   <div class="contract_pro_list">
-    <ul>
-     <li style="width:50px; "><?php echo $i; ?></li>
-     <li style="width:300px;text-align:center; border:1px solid #ccc;height:25px;"><?php echo $value['pro_id']; ?>
-     
-        <button style="color:red;"><?php echo display_contract_state($value['state']); ?></button>
-     </li>
-     <li style="width:100px;text-align:center;border:1px solid #ccc;height:25px;"><?php echo $value['unit']; ?></li>
-     <li style="width:100px;text-align:center;border:1px solid #ccc;height:25px;"><?php echo $value['maxdelivery'] == 0?"现货":$value['maxdelivery']." 周"; ?></li>
-     <li style="width:100px;text-align:center;border:1px solid #ccc;height:25px;"><?php echo $value['quantity']; ?></li>
-     
-     <li style="width:150px;text-align:center;border:1px solid #ccc;height:25px;"><?php echo $value['pro_price']; ?></li>
-     <li style="width:150px;text-align:center;border:1px solid #ccc;height:25px;">
-     <?php $pro_price = $value['pro_price'] * $value['quantity']; echo number_format($pro_price,2,".","")?></li>
-    </ul>
-    
-   </div>
-   <?php 
-   $i++;
-    }
-   
-   ?>
-     
-   <ul>
-     <li style="width:962px; border:1px solid #ccc;height:25px;line-height:25px;">
-     总价（含17%增值税人民币价格）：
-     <input type="text" id="contract_count" name="contract_count" style=" text-align:center;float:right; width:150px; border:0px " value="￥ <?php echo $contract_array['amount'] ?>" placeholder="0.00" readonly />
-     </li>
-    </ul>
-  </div>
-
-
- 
-</div>
-<?php
 }
 ?>

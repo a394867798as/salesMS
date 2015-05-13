@@ -94,6 +94,7 @@ function insert_contract($post){
 	foreach ($post as $key => $value){
 		if($key != "" && $value != ""){
 			$$key = $conn->real_escape_string(trim($value));
+			echo $key."</br>";
 		}
 	}
 	
@@ -101,7 +102,7 @@ function insert_contract($post){
 	$contract_count = round($contract_count,2);
 	$accountId = $_SESSION['accountId'];
 	
-	if(empty($contract_id)){
+	if($contract_id === "" || !isset($contract_id)){
 		
 		header("refresh:5;url=../?action=fabuhetong");
 	}
@@ -203,93 +204,7 @@ function insert_contract($post){
 	//end transaction
 	$conn->commit();
 	$conn->autocommit(TRUE);
-	$conn->close();
 	
 	return $contract_id;
-}
-//获取数据库中contract的数据
-function get_contract_list($contract_id="", $state="", $time=6){
-	//设置时区
-	date_default_timezone_set('PRC');
-	$nowtime = time();
-	
-	
-	if($time == 6 && $contract_id == "" && $state == ""){
-		$time = 648000 * 24;
-		$selecttime = $nowtime - $time;
-		$selecttime = date("Y-m-d",$selecttime);
-		$query = "select * from contract
-				 where date > '".$selecttime."'";
-	}
-	if($time == 6 && $contract_id != "" ){
-		$time = 648000 * 24;
-		$selecttime = $nowtime - $time;
-		$selecttime = date("Y-m-d",$selecttime);
-		$query = "select * from contract
-				 where date > '".$selecttime."'
-				 and contract_id = '".$contract_id."'";
-	}
-	
-	$contract_array_list = array();
-	//连接数据库
-	$conn = db_connect();
-	
-	$result = $conn->query($query);
-	
-	while($contract_array = $result->fetch_assoc()){
-		$contract_id = $contract_array['contract_id'];
-		//获取单个合同的客户信息，并存入$contract_array
-		$query = "select * from customer_information
-				  where customer_id = '".$contract_array['customer_id']."'";
-		$customer_result = $conn->query($query);
-		foreach ($customer_result->fetch_assoc() as $key=>$value){
-			$contract_array[$key] = $value;
-		}
-		//获取单个合同的产品信息,并存入$contract_array
-		if($state == ""){
-			$query = "select * from contract_list
-				  where contract_id = '".$contract_id."'";
-		}else{
-			$query = "select * from contract_list
-				  where contract_id = '".$contract_id."'
-				  and state =".$state;
-		}
-		$pro_result = $conn->query($query);
-		$pro_number = 0;
-		while($pro_array = $pro_result->fetch_assoc()){
-			//获取产品信息
-			$query = "select * from product_info
-					  where pro_id = '".$pro_array['pro_id']."'";
-			$proinfo_result = $conn->query($query);
-			foreach ($proinfo_result->fetch_assoc() as $pro_key => $pro_value){
-				$pro_array[$pro_key] = $pro_value;
-			}
-			$contract_array['pro_list'][$pro_number] = $pro_array;
-			$pro_number ++; 
-		}
-		$contract_array_list[$contract_id] = $contract_array;
-	}
-	$conn->close();
-	return $contract_array_list;
-	
-}
-function display_contract_state($state){
-	switch ($state){
-		case 0:
-			return "已签订合同,等待付款";
-			break;
-		case 1:
-			return "货款已经到账";
-			break;
-		case 2:
-			return "已经订货";
-			break;
-		case 3:
-			return "产品已经出库";
-			break;
-		case 4;
-		return "发票已开具";
-		break;
-	}
 }
 ?>
