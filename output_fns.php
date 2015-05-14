@@ -199,7 +199,7 @@ function display_nav_left($nav,$action = ""){
 	}
 }
 //初始化页面内容
-function display_main_all($username, $name,$action ="",$position, $state, $contractid = ""){
+function display_main_all($username, $name,$action ="",$position, $state="", $contractid = "",$customerid = ""){
 	//如果action为空，则为初始化页面
 	switch ($action){
 		case "":
@@ -223,6 +223,9 @@ function display_main_all($username, $name,$action ="",$position, $state, $contr
 			break;
 		case "chakanhetong";
 			display_select_contract($action,$state,$contractid);
+			break;
+		case "修改客户信息":
+			display_customer_information($action,$customerid);
 			break;
 	}
 }
@@ -909,5 +912,20 @@ function display_button($value,$state,$maxdelivery,$contractid = ""){
 	    </div>
 <?php
 	} 
+}
+function display_customer_information($action,$customerid = ""){
+	$customer_array = get_customer_array($customerid);
+?>
+<div class="customeroutput">
+ <h1><?php echo $action; ?></h1>
+   <div class="search">
+       <form method="post" action="#" onSubmit="return false" name="form1">
+           <input type="text"  placeholder="客户名称 客户编码" id="searchcustomer_id" class="text" title="产品型号"  required/>
+           <input type="submit" value="GO" class="btn" id="searchcustomer_butn"  />
+       </form>
+  </div>
+ <?php  ?>
+</div>
+<?php
 }
 ?>

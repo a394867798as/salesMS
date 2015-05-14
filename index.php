@@ -7,6 +7,7 @@ checkSessionUsernameNo();
 @$action = $_REQUEST['action'];
 @$state = $_GET['state'];
 @$contractid = $_GET['contractid'];
+@$customerid = $_GET['customerid'];
 switch ($action){
 	case "chakanhetong":
 		$action = "查看合同";

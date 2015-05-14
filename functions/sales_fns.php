@@ -339,4 +339,29 @@ function display_outdata_state($pro_value,$contract_array){
 		break;
 	}
 }
+function get_customer_array($customerid = ""){
+	$conn = db_connect();
+	if($customerid == ""){
+		$query = "select * from customer_information";
+	}else{
+		$customerid = $conn->real_escape_string(trim($customerid));
+		
+		$query = "select * from customer_information
+				  where customer_id = '".$customerid."'";
+	}
+	
+	$customer_array = array();
+	
+	$result = $conn->query($query);
+	if($result->num_rows > 0){
+		while($customer_array_list = $result->fetch_assoc()){
+			$customerid = $customer_array_list['customer_id'];
+			$customer_array[$customerid] = $customer_array_list;
+		}
+	}else{
+		$customer_array['error'] = 0; 
+	}
+	
+	return $customer_array;
+}
 ?>
