@@ -219,7 +219,8 @@ function get_contract_list($contract_id="", $state="", $time=6){
 		$selecttime = $nowtime - $time;
 		$selecttime = date("Y-m-d",$selecttime);
 		$query = "select * from contract
-				 where date > '".$selecttime."'";
+				 where date > '".$selecttime."'
+				 order by date desc";
 	}
 	if($time == 6 && $contract_id != "" ){
 		$time = 648000 * 24;
@@ -304,6 +305,38 @@ function get_search_value($value, $search = ""){
 	}else{
 		$value = str_ireplace($search, "<span style='color:red;'>".ucwords($search)."</span>", $value);
 		return $value;
+	}
+}
+function display_outdata_state($pro_value,$contract_array){
+	
+	$state = $pro_value['state'];
+	$maxdelivery = $pro_value['maxdelivery'];
+	$contractid = $pro_value['contract_id'];
+	switch ($state){
+		case 0:
+			$value = "已付款 ?";
+			display_button($value, $state,$maxdelivery);
+			break;
+		case 1:
+			if($maxdelivery == 0){
+				$value = "已发货 ？";
+			}else{
+				$value = "已定货 ?";
+			}
+			display_button($value, $state,$maxdelivery,$contractid);
+			break;
+		case 2:
+			return "已经订货";
+			break;
+		case 3:
+			return "产品已经出库";
+			break;
+		case 4;
+		return "发票已开具";
+		break;
+		case 5;
+		return "<span style='color:#ccc;'>此项已经取消</span>";
+		break;
 	}
 }
 ?>

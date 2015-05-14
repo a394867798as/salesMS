@@ -7,7 +7,14 @@ checkSessionUsernameNo();
 @$action = $_REQUEST['action'];
 @$state = $_GET['state'];
 @$contractid = $_GET['contractid'];
-
+switch ($action){
+	case "chakanhetong":
+		$action = "查看合同";
+		break;
+	case "fabuhetong":
+		$action = "发布合同";
+		break;
+}
 //判断
 if($action === "logout"){
 	session_destroy();

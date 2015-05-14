@@ -217,7 +217,11 @@ function display_main_all($username, $name,$action ="",$position, $state, $contr
 		case "查看产品":
 			display_select_proinfo($action,$state);
 			break;
+		
 		case "查看合同";
+			display_select_contract($action,$state,$contractid);
+			break;
+		case "chakanhetong";
 			display_select_contract($action,$state,$contractid);
 			break;
 	}
@@ -623,7 +627,7 @@ function display_html_top(){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>添加合同中。。。。</title>
-<link href="../css/lonading.css" rel="stylesheet" type="text/css">
+<link href="http://127.0.0.1/salesMS/css/lonading.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h1>添加合同中。。。。。</h1>
@@ -648,17 +652,15 @@ function display_loading(){
 }
 function display_select_contract($action,$state = "",$contractid = ""){
     echo "<script src='js/select_contract.js'></script>";
-	if($contractid != ""){
+	if($contractid != "" && $state == ""){
+		
 		display_contract($contractid);
 	}elseif($contractid != "" && $state == "all"){
+		
 		display_contract($contractid,$state);
 		
 	}
-	if($state != "" ){
-		
-		display_state_contract($state);
 	
-	}
 	if($state == "" && $contractid == ""){
 		display_all_contract();	
 		
@@ -766,7 +768,14 @@ function display_contract($contractid,$state = ""){
 	$contract_array = $contract_array_list[$contractid];
 ?>
 <div class="contractinput">
- <h1 align="center">工业备件合同</br>CONTRACT</h1>
+ <?php
+
+  if($state == "all"){
+	  echo "<h1 align='center' style='color:#fff;  border:1px solid #f6f6f6; border-radius:5px; background:green'>合同 <span style='color:red;'>"
+	  .$contractid ."</span> 成功发布</h1>";
+  }
+ ?>
+ <h1 align="center" style="">工业备件合同</br>CONTRACT</h1>
  
  <div class="contractForm">
   <!-- 头部开始 -->
@@ -774,7 +783,7 @@ function display_contract($contractid,$state = ""){
    <table>
     <tr>
      <td align="right"><span>*</span>合同号: </td>
-     <td style="font-family:Arial; text-decoration:underline;"><?php echo $contractid; ?></td>
+     <td style="font-family:Arial; text-decoration:underline;"><div id="contract_id_select"><?php echo $contractid; ?></div></td>
     </tr>
     <tr>
      <td align="right"><span>*</span>签订日期:</td>
@@ -828,61 +837,77 @@ function display_contract($contractid,$state = ""){
     </table>
    </div>
   </div>
-  <div id="contract_pro">
-   <table cellpadding="0" cellspacing="0">
-    <tr>
-     <td width="50px" align="center">序号</td>
-     <td width="300px" align="center">型号</td>
-     <td width="100px" align="center">单位</td>
-     <td width="100px" align="center">交货期</td>
-     <td width="100px" align="center">数量</td>
-     
-     <td width="150px" align="center">单价</td>
-     <td width="150px" align="center">总价</td>
-    </tr>
-   </table>
-   <input type="hidden" name="pro_count" id="pro_count" />
-   
-   
+  <div class="contract-pro contractid_pro">
+   <h1 style="color:#666;">订购产品:</h1>
    <?php
-    $i = 1;
-    foreach ($contract_array['pro_list'] as $key => $value){
-    	
+    $i = 1;	
    ?>
-   <div class="contract_pro_list">
-    <ul>
-     <li style="width:50px; "><?php echo $i; ?></li>
-     <li style="width:300px;text-align:center; border:1px solid #ccc;height:25px;"><?php echo $value['pro_id']; ?>
-     
-        <button style="color:red;"><?php echo display_contract_state($value['state']); ?></button>
-     </li>
-     <li style="width:100px;text-align:center;border:1px solid #ccc;height:25px;"><?php echo $value['unit']; ?></li>
-     <li style="width:100px;text-align:center;border:1px solid #ccc;height:25px;"><?php echo $value['maxdelivery'] == 0?"现货":$value['maxdelivery']." 周"; ?></li>
-     <li style="width:100px;text-align:center;border:1px solid #ccc;height:25px;"><?php echo $value['quantity']; ?></li>
-     
-     <li style="width:150px;text-align:center;border:1px solid #ccc;height:25px;"><?php echo $value['pro_price']; ?></li>
-     <li style="width:150px;text-align:center;border:1px solid #ccc;height:25px;">
-     <?php $pro_price = $value['pro_price'] * $value['quantity']; echo number_format($pro_price,2,".","")?></li>
-    </ul>
-    
-   </div>
-   <?php 
-   $i++;
-    }
-   
-   ?>
-     
-   <ul>
-     <li style="width:962px; border:1px solid #ccc;height:25px;line-height:25px;">
-     总价（含17%增值税人民币价格）：
-     <input type="text" id="contract_count" name="contract_count" style=" text-align:center;float:right; width:150px; border:0px " value="￥ <?php echo $contract_array['amount'] ?>" placeholder="0.00" readonly />
-     </li>
-    </ul>
+   <div class="contract-pro-list" style="width:800px;">
+	         <?php 
+	        foreach ($contract_array['pro_list'] as $pro_key => $pro_value){
+	      	 ?>
+	         <div class="contract-pro-list-all" style="width:800px; padding:5px;">
+	         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
+	         <table style="float: left;">
+	          <tr>
+				<td align="right">产品型号:</td>
+				<td ><span style="font-size:14px; color:blue; cursor:pointer;" class="pro_id" ><?php echo $pro_value['pro_id']; ?></span></td>
+			  </tr>
+			   <tr>
+				<td align="right">生产厂家:</td>
+				<td ><span style="font-size:14px; color:green; cursor:pointer;" ><?php echo $pro_value['brand']; ?></span></td>
+			  </tr>
+			  <tr>
+			   <td align="right">产品名称:</td>
+			   <td><span style="color:#666; font-size:14px;"><?php echo $pro_value['name']; ?></span></td>
+			  </tr>
+			  <tr>
+			   <td align="right">数量:</td>
+			   <td><?php echo $pro_value['quantity'].$pro_value['unit'] ?></td>
+			  </tr>
+              <tr>
+			   <td align="right">价格:</td>
+			   <td>
+			   <?php 
+			   $pro_price = $pro_value['quantity'] * $pro_value['pro_price'];
+			   $pro_price = number_format($pro_price, 2, '.', '');
+			   echo "<span style='color:#333;'>￥".$pro_price."<span>";
+			    ?>
+                </td>
+			  </tr>
+			 </table>
+			 <?php  display_outdata_state($pro_value,$contract_array);?>
+	         </div>
+             
+	         <?php 
+			
+	        }
+	        $i++;
+	         ?>
+	 </div>
   </div>
-
-
- 
 </div>
 <?php
+}
+function display_button($value,$state,$maxdelivery,$contractid = ""){
+	if(($state == 1 && $maxdelivery == 0) || $state == 2 ){
+?>
+<div class="contract-button" style="float: right;">
+  <div class="contract-button-list">
+  <a href="http://127.0.0.1/salesMS/?action=产品出库&&contractid=<?php echo $contractid;  ?>">产品出库?</a>	
+  </div>     
+</div>
+ 		
+<?php 
+	}else{
+?>
+<div class="contract-button" style="float: right;">
+	         <div class="contract-button-list"> 
+	           <button class="state_button" style="width:148px; height:30px;" ><?php echo $value; ?></button>
+	           <input type="hidden" class="state_button_value" value="<?php echo $state; ?>" />
+	         </div>
+	    </div>
+<?php
+	} 
 }
 ?>
