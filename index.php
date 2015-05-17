@@ -1,7 +1,7 @@
 <?php 
 session_start();
 include 'include_fns.php';
-
+date_default_timezone_set("prc");
 checkSessionUsernameNo();
 
 //create short variable names
