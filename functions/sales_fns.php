@@ -339,6 +339,7 @@ function display_outdata_state($pro_value,$contract_array){
 		break;
 	}
 }
+//获取所有客户信息 
 function get_customer_array($customerid = ""){
 	$conn = db_connect();
 	if($customerid == ""){
@@ -361,7 +362,36 @@ function get_customer_array($customerid = ""){
 	}else{
 		$customer_array['error'] = 0; 
 	}
-	
+	$conn->close();
 	return $customer_array;
+}
+//根据查询条件获取客户数组
+function get_customer_show_array($query){
+	$conn = db_connect();
+	$customer_array = array();
+	
+	$result = $conn->query($query);
+	if($result->num_rows > 0){
+		while($customer_array_list = $result->fetch_assoc()){
+			$customerid = $customer_array_list['customer_id'];
+			$customer_array[$customerid] = $customer_array_list;
+		}
+	}else{
+		$customer_array['error'] = 0;
+	}
+	$conn->close();
+	return $customer_array;
+}
+//限制显示文字字数
+function select_char_length($value,$number){
+
+	$count = mb_strlen($value);
+	if($count<$number){
+		return $value;
+	}else{
+		$value = mb_substr($value,0,$number)."...";
+		return $value;
+	}
+
 }
 ?>

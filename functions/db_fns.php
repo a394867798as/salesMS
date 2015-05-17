@@ -7,5 +7,6 @@ function db_connect(){
 	}else{
 		return $result;
 	}
+	
 }
 ?>

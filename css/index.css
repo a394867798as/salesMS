@@ -223,7 +223,7 @@ color:#666;outline:none;}
 .contract-pro h1,.contract-pro-list-all h1{ font-size:15px; color:green;}
 .contract-pro-list{ margin-right:250px; margin-top:10px; float:left; width:300px;}
 .contract-pro-list-all{border:1px solid #ddd; border-radius:4px; width:300px; margin-bottom:10px;}
-.contract-pro-list-all::after{
+.contract-pro-list-all:after{
   content: ".";
   display: block;
   height: 0;
@@ -248,3 +248,37 @@ border-color: #adb1b8 #a2a6ac #8d9096; border-radius:2px; box-shadow: 0 1px 0 rg
 
 .customeroutput{width:1000px; min-height:500px; background-color:#fff; margin-left:10px; margin-right:30px; margin-bottom:20px; padding:10px 0 0 10px;}
 .customeroutput h1{ font-size:18px; color:#0c9;}
+.customerList {margin-top:0px ;  border-radius:4px 4px 0 0;}
+.customerList:after{
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+.customerList ul{ position:relative; float:inherit;} 
+.customerList ul li{ float:left; margin-right:10px;  font-size:14px; height:30px; line-height:30px; color:#666;}
+.coustomer-button-list{background: -webkit-linear-gradient(to bottom,#f7f8fa,#e7e9ec);  background: -webkit-linear-gradient(top,#f7f8fa,#e7e9ec); height:20px;   background: #eff0f3;  width:100px; text-align:center; line-height:20px; border:1px solid #f6f6f6; margin:3px auto;
+border-color: #adb1b8 #a2a6ac #8d9096; border-radius:2px; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; cursor:pointer; }
+.coustomer-button-list a{color:#666; text-decoration:none; font-size:14px;}
+.coustomer-button-list a:hover{ color:#096;}
+.coustomer-button-list:hover{ background-color:#e7e9ec;}
+
+.fenye_button{border:1px solid #ccc; border-radius:5px; height:30px; width:100px; line-height:30px; text-align:center;}
+.fenye_button a{color:#030; font-size:20px; text-decoration:none; font-family:Arial;}
+.fenye_button a:hover{color:#fff;}
+.fenye_button:hover{ background-color:#CCC;}
+.fenye:after{
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+.tongji_informattion{width:1000px; min-height:500px; background-color:#fff; margin-left:10px; margin-right:30px; margin-bottom:20px; padding:10px 0 0 10px;}
+.tongji_informattion h1{font-size:18px; color:#0c9;}
+.tongji_year{ margin-top:50px;}
+.tongji_year h4{ margin:0px auto; margin-bottom:10px; background:#0c9; color:#333; text-align:center; border:1px solid #999; border-radius:5px; width:900px;}
+.tongji_year td,.tongji_year th{ border-bottom:1px solid #666; border-right:1px solid #666; }

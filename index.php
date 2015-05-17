@@ -1,6 +1,7 @@
 <?php 
 session_start();
 include 'include_fns.php';
+
 checkSessionUsernameNo();
 
 //create short variable names
@@ -8,6 +9,8 @@ checkSessionUsernameNo();
 @$state = $_GET['state'];
 @$contractid = $_GET['contractid'];
 @$customerid = $_GET['customerid'];
+@$page = $_GET['page'];
+
 switch ($action){
 	case "chakanhetong":
 		$action = "查看合同";
@@ -32,6 +35,6 @@ if($action == "发布合同"){
 	insertTypeForm($state);
 }
 
-display_center_content($_SESSION['username'], $_SESSION['name'],$action,$_SESSION['position'],$state,$contractid);
+display_center_content($_SESSION['username'], $_SESSION['name'],$action,$_SESSION['position'],$state,$contractid,$customerid,$page);
 do_html_footer();
 ?>

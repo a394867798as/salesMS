@@ -138,7 +138,8 @@ function out_account_info(){
 	}
 }
 //输出index中心内容
-function display_center_content($username, $name,$action = "",$position,$state = "", $contractid=""){
+function display_center_content($username, $name,$action = "",$position,$state = "", $contractid="",$customerid="",$page=""){
+	
 	$nav = array();
 	$nav['合同中心'] = (array('发布合同','查看合同','修改客户信息'));
 	$nav['产品中心'] = (array('录入产品','查看产品'));
@@ -163,7 +164,7 @@ function display_center_content($username, $name,$action = "",$position,$state =
        <?php display_nav_left($nav, $action); ?>
       </div>
       <div id="main">
-       <?php  display_main_all($username, $name,$action ,$position,$state,$contractid); ?>
+       <?php  display_main_all($username, $name,$action ,$position,$state,$contractid,$customerid,$page); ?>
       </div>
   </div>
  </div>
@@ -199,8 +200,9 @@ function display_nav_left($nav,$action = ""){
 	}
 }
 //初始化页面内容
-function display_main_all($username, $name,$action ="",$position, $state="", $contractid = "",$customerid = ""){
+function display_main_all($username, $name,$action ="",$position, $state="", $contractid = "",$customerid = "",$page = ""){
 	//如果action为空，则为初始化页面
+
 	switch ($action){
 		case "":
 			display_index_html( $name,$action,$position);
@@ -225,7 +227,10 @@ function display_main_all($username, $name,$action ="",$position, $state="", $co
 			display_select_contract($action,$state,$contractid);
 			break;
 		case "修改客户信息":
-			display_customer_information($action,$customerid);
+			display_customer_information($action,$customerid,$page);
+			break;
+		case "查看统计信息":
+			display_all_tongjixinxi($action,$state);
 			break;
 	}
 }
@@ -913,9 +918,10 @@ function display_button($value,$state,$maxdelivery,$contractid = ""){
 <?php
 	} 
 }
-function display_customer_information($action,$customerid = ""){
+function display_customer_information($action,$customerid = "",$page = ""){
 	$customer_array = get_customer_array($customerid);
 ?>
+<script src="js/customer_update.js"></script>
 <div class="customeroutput">
  <h1><?php echo $action; ?></h1>
    <div class="search">
@@ -924,8 +930,218 @@ function display_customer_information($action,$customerid = ""){
            <input type="submit" value="GO" class="btn" id="searchcustomer_butn"  />
        </form>
   </div>
- <?php  ?>
+  <div id="customer_all_information">
+ <?php display_customer_info($customerid, $page);  ?>
+ </div>
 </div>
 <?php
+}
+function display_customer_info($customerid = "",$page = ""){
+	
+	if($customerid == ""){
+
+	    if($page == ""){
+	    	$page = 1;
+	    }
+		$showNumber = 50;
+		$conn = db_connect();//连接数据库
+		$query = "select count(*) from customer_information";
+		$resut = $conn->query( $query) or die($conn->error);
+		
+	    $list_count = $resut->fetch_assoc();
+		$list_count = $list_count['count(*)'];
+	    $count_page = ceil($list_count/$showNumber);//计算出页数，总条数除以每页显示的条数，小数进1取整
+	    $page_list = 50*($page-1);
+	    
+	    $query = "select * from customer_information limit ".$page_list.",50";
+	    
+	    $customer_array = get_customer_show_array($query);
+	    $conn->close();
+	    $i = 1;
+	    fenye_button($page, $count_page);
+		?>
+        
+         <div class='customerList' style='background-color:#FFF; border:1px solid #ccc; margin-top:10px;'>
+         <ul >
+          <li style="width:50px; ">编号</li>
+          <li style="width:270px; background-color:#f6f6f6;">公司名称</li>
+          <li style="width:380px;">地址</li>
+          <li style="width:50px; background-color:#f6f6f6;">联系人</li>
+          <li style="width:198px; text-align:center">查看详细信息</li>
+         </ul>
+        </div>
+        <?php
+	    foreach ($customer_array as $key => $value){
+			if($i%2 == 0){
+				echo "<div class='customerList' style='background-color:#fff;' >";
+			}else{
+				echo "<div class='customerList' style='background-color:#ccc;'>";
+			}
+	 	?>
+	    
+         <ul>
+          <li style="width:50px;"><?php printf("%s",$key); ?></li>
+          <li style="width:270px;"><?php printf("%s",$value['company_name']);?></li>
+          <li style="width:380px;"><?php printf("%s",select_char_length($value['address'], 25));?></li>
+          <li style="width:50px;"><?php printf("%s",$value['name']);?></li>
+          <li style="width:200px;">
+          
+	         <div class="coustomer-button-list" > 
+	           <a href='http://127.0.0.1/salesMS/?action=修改客户信息&&customerid=<?php echo $key; ?>'>查看详细信息</a>
+	         </div>
+	     </li>
+         </ul>
+        </div>
+        
+	    <?php 
+		$i++;
+		
+	    }
+	    
+		fenye_button($page, $count_page);
+        
+	}else{
+		$query = "select * from customer_information
+		   		 where customer_id = '".$customerid."'";
+		$customer_array = get_customer_show_array($query);
+		$customer_this = $customer_array[$customerid];
+	?>
+    
+    <div class='customerList' style='background-color:#FFF; border:1px solid #ccc; margin-top:10px;'>
+     <form onSubmit="return false">
+     <table width="600px" style="float:left;">
+       <tr>
+		<td align="right">客户编号:</td>
+		<td><span ><?php echo $customer_this['customer_id']; ?></span>
+        <input type="hidden" id="customer_id" value="<?php echo $customer_this['customer_id']; ?>" /></td>
+	   </tr>
+       <tr>
+		<td align="right">公司名称:</td>
+		<td><input type="text"  value="<?php echo $customer_this['company_name'] ?>" style="width:200px;"  id="company_name" disabled /></td>
+	   </tr>
+       <tr>
+		<td align="right">地址:</td>
+		<td><input type="text"  value="<?php echo $customer_this['address'] ?>" style="width:400px;"  id="address" disabled /></td>
+	   </tr>
+       <tr>
+		<td align="right">联系电话:</td>
+		<td><input type="text"  value="<?php echo $customer_this['tell'] ?>" style="width:200px;"  id="tell" disabled /></td>
+	   </tr>
+       <tr>
+		<td align="right">传真:</td>
+		<td><input type="text"  value="<?php echo $customer_this['fax'] ?>" style="width:200px;"  id="fax" disabled /></td>
+	   </tr>
+       <tr>
+		<td align="right">联系人:</td>
+		<td><input type="text"  value="<?php echo $customer_this['name'] ?>" style="width:200px;"  id="name" disabled /></td>
+	   </tr>
+       <tr>
+		<td align="right">收票地址:</td>
+		<td><input type="text"  value="<?php echo $customer_this['billing_address'] ?>" style="width:400px;"  id="billing_address" disabled /></td>
+	   </tr>
+       <tr>
+        <td></td>
+        <td align="left" >
+         <button id="update_customer" style="height:30px; cursor:pointer;">修改客户信息</button>
+         <button id="true_update" style="height:30px; cursor:pointer; display:none;">确认修改客户信息</button>
+        </td>
+       </tr>
+     </table>
+      <div id="waringInformation" style="width:300px;">
+      <span></span>
+ 	  </div>
+     </form>
+    </div>
+    <?php
+	}
+}
+function fenye_button($page = "",$count_page = ""){
+	echo "<div class='fenye' style='margin:20px 0 1px 0; '>";
+		if($page>1 && $page<$count_page){
+			echo "<div class='fenye_button' style='float:left;'>
+				 <a href='http://127.0.0.1/salesMS/?action=修改客户信息&&page=".($page>1?$page-1:$page)."'>上一页</a>
+				</div><div class='fenye_button' style='float:right'>
+				 <a  href='http://127.0.0.1/salesMS/?action=修改客户信息&&page=".($page<$count_page?$page+1:$page)."'>下一页</a>
+				</div>";
+		} 
+		if($page == 1){
+			echo "<div class='fenye_button' style='float:right'>
+				 <a href='http://127.0.0.1/salesMS/?action=修改客户信息&&page=".($page<$count_page?$page+1:$page)."'>下一页</a>
+				</div>";
+		}
+		if($page == $count_page){
+			echo "<div class='fenye_button' style='float:left'>
+				 <a href='http://127.0.0.1/salesMS/?action=修改客户信息&&page=".($page>1?$page-1:$page)."'>上一页</a>
+				</div>";
+		}
+        echo  "</div>";
+}
+function display_all_tongjixinxi($action,$state = ""){
+	
+		
+		?>
+        <div class="tongji_informattion">
+         <h1><?php echo $action; ?></h1>
+         <?php show_tongji_information($action,$state); ?>
+        </div>
+        <?php
+
+}
+function show_tongji_information($action,$state = ""){
+	if($state == ""){
+		$checkdate = "2014-12-31";
+		$nowday = date("Y年m月d日",time());
+		$query = "select sum(amount) from contract
+		 		where date > '".$checkdate."'";
+		$conn = db_connect();
+		
+		$result = $conn->query($query) or die($conn->error);
+		$contract_sum = $result->fetch_assoc();
+		//使用关联查询满足合同列表条件的合同产品列表的统计信息
+		$query1 = "select contract_id from contract
+				  where date>'".$checkdate."'";
+		$query = "select pro_id,count(pro_id),sum(pro_price) from contract_list
+ 		 		  where contract_id IN (".$query1.")
+				  group by pro_id";
+		$result = $conn->query($query) or die($conn->error);
+		$contract_procount_array = array();
+		while($array = $result->fetch_assoc()){
+			$contract_procount_array[$array['pro_id']] = $array;
+		}
+		?>
+		<div class="tongji_year">
+         
+         <h4>今年截至到 <span style="color:yellow;"><?php echo $nowday; ?></span> 
+         	所有签订合同总额：RMB<span style="color:red;"> <?php echo $contract_sum['sum(amount)']; ?></span> 元整</h4>
+         <table width="900px" align="center"  style="border:1px solid #666;"  cellspacing="0">
+         <thead>
+          
+           
+            <th width="50px;">序号</th>
+            <th width="350px">产品型号</th>
+            <th>销售数量</th>
+            <th>销售总价(RMB)</th>
+           
+           </thead>
+           <?php
+           $i = 1;
+            foreach ($contract_procount_array as $key => $value){
+            ?>
+             <tr>
+              <td align="center"><?php echo $i; ?></td>
+              <td align="left"><?php echo $value['pro_id'] ?></td>
+              <td align="center"><?php echo $value['count(pro_id)']; ?></td>
+              <td align="right"><?php echo $value['sum(pro_price)'];?></td>
+             </tr>
+            <?php 
+			$i++;
+            } 
+           ?>
+         
+         </table>
+        </div>
+		<?php 
+		
+	}
 }
 ?>
