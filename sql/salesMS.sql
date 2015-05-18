@@ -51,6 +51,7 @@ create table billing_information(
 CREATE TABLE `outstore` (
  `contract_id` varchar(20) NOT NULL COMMENT '合同号',
  `pro_id` varchar(30) NOT NULL,
+ `quantity` tinyint(3) NOT NULL,
  `company_name` varchar(60) DEFAULT NULL,
  `address` varchar(150) NOT NULL,
  `tell` varchar(11) NOT NULL,
@@ -58,6 +59,7 @@ CREATE TABLE `outstore` (
  `express_nam` varchar(20) NOT NULL,
  `express_number` varchar(20) NOT NULL,
  `store_nam` varchar(15) NOT NULL,
+ `time` date NOT NULL,
  PRIMARY KEY (`contract_id`,`pro_id`),
  CONSTRAINT `hetonghao` FOREIGN KEY (`contract_id`) REFERENCES `contract_list` (`contract_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

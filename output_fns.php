@@ -887,7 +887,7 @@ function display_contract($contractid,$state = ""){
                 </td>
 			  </tr>
 			 </table>
-			 <?php  display_outdata_state($pro_value,$contract_array);?>
+			 <?php  display_outdata_state($pro_value,$contract_array,$pro_value['pro_id']);?>
 	         </div>
              
 	         <?php 
@@ -900,12 +900,12 @@ function display_contract($contractid,$state = ""){
 </div>
 <?php
 }
-function display_button($value,$state,$maxdelivery,$contractid = ""){
+function display_button($value,$state,$maxdelivery,$contractid = "",$pri_id = ''){
 	if(($state == 1 && $maxdelivery == 0) || $state == 2 ){
 ?>
 <div class="contract-button" style="float: right;">
   <div class="contract-button-list">
-  <a href="http://127.0.0.1/salesMS/?action=产品出库&&contractid=<?php echo $contractid;  ?>">产品出库?</a>	
+  <a href="http://127.0.0.1/salesMS/?action=产品出库&contractid=<?php echo $contractid;  ?>&out_me=<?php echo $pri_id; ?>">产品出库?</a>	
   </div>     
 </div>
  		
@@ -1148,8 +1148,10 @@ function show_tongji_information($action,$state = ""){
 	}
 }
 function display_product_outstore($action,$contractid = ""){
-	echo $contractid;
+	$out_me = array();
 	@$out_me = $_POST['out_me'];
+	@$out_me[] = $_GET['out_me'];
+	
 	if($contractid == ""){
 		$query = "select * from contract";
 		$outstore_array = get_contract_query($query, $state = 1);
@@ -1170,7 +1172,10 @@ function display_product_outstore($action,$contractid = ""){
             </div>
             <div class="outstore_list">
             
-            <?php foreach ($value['pro_list'] as $pro_value){ ?>
+            <?php 
+			
+			foreach ($value['pro_list'] as $pro_value){ 
+			?>
             
             <div class="contract-outstore-list-all">
 	         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
@@ -1227,9 +1232,101 @@ function display_product_outstore($action,$contractid = ""){
 		 </div>
 		<?php 
 	}else{
+		if($out_me == "" || $out_me['0'] == ""){
+			echo "<script>alert('请选择要出库产品');window.location = '?action=产品出库';</script>";
+			
+		}
 		$query = "select * from contract where contract_id = '".$contractid."'";
 		$outstore_array = get_contract_query($query, $state = 1);
-		print_r($outstore_array);
+		$outstore_array = $outstore_array[$contractid];
+		
+		?>
+		<form name="outstore_form" method="post" action="functions/insert_outstore_info.php">
+		<div class='outstore_infor'>
+		  <h1 align="center">
+		  <?php echo "合同 <span style='color:red;'>".$contractid."</span>". $action; ?>
+		  <input type="hidden" id="contract_id" name="contract_id" value="<?php echo $contractid; ?>" /></h1>
+          <div class="insert_outstore_info">
+          
+           <div class="outstore_form">
+            <table width="500px" border="1" cellspacing="0" bgcolor="#fff">
+             <caption>出库产品列表</caption>
+             <tr>
+              <th width="400px">产品型号</th>
+              <th width="100px">合同数量</th>
+             </tr>
+             <?php
+			  foreach($out_me as $value){
+				  foreach($outstore_array['pro_list'] as $pro_value){
+					  if($pro_value['pro_id'] == $value){
+						  echo "<tr>
+						  <td align='center'>".$value."<input type='hidden' name='pro_id[]' value=".$value."  /></td>
+						  <td align='center'>".$pro_value['quantity']."<input type='hidden' name='quantity[]' value=".$pro_value['quantity']." /></td>
+						  </tr>";
+					  }
+				  }
+			  }
+			 ?>
+            </table>
+             <table width="500px" style="border:1px solid #ddd; margin-top:10px;">
+              <tr>
+               <td colspan="2" 	>收货人信息：</td>
+              </tr>
+              <tr>
+               <td align="right">公司名称：</td>
+               <td>
+               <input type="text" name="company_name" 
+               value="<?php echo $outstore_array['company_name']; ?>" required style="width:250px;" />
+               </td>
+              </tr>
+              <tr>
+               <td align="right">地址：</td>
+               <td><input type="text" name="address" value="<?php echo $outstore_array['address']; ?>" style="width:350px;" required /></td>
+              </tr>
+              <tr>
+               <td align="right">联系人：</td>
+               <td><input type="text" name="name" value="<?php echo $outstore_array['name']; ?>" style="width:100px;" required /></td>
+              </tr>
+              <tr>
+               <td align="right">联系电话：</td>
+               <td><input type="text" name="tell" value="<?php echo $outstore_array['tell']; ?>" required />
+               <input type="hidden" name="fax" value="<?php echo $outstore_array['fax']; ?>" /></td>
+              </tr>
+              <tr>
+               <td align="right">包装方式：</td>
+               <td>
+               <select name="store_nam" >
+                <option value="纸箱">纸箱</option>
+                <option value="纸箱木托">纸箱木托</option>
+                <option value="木箱">木箱</option>
+               </select>
+               </td>
+              </tr>
+              <tr>
+               <td align="right">承运人：</td>
+               <td>
+               <select name="express_nam" >
+                <option value="顺丰速运">顺丰速运</option>
+                <option value="德邦快递">德邦快递</option>
+                <option value="EMS">EMS</option>
+               </select>
+               </td>
+              </tr>
+              <tr>
+               <td align="right">运单号：</td>
+               <td><input type="text" name="express_number"  required /></td>
+              </tr>
+              
+             </table>
+            <div style=" margin:10px auto; width:600px; ">
+               <button name="outstore_button" style="margin-left:100px; height:30px; line-height:30px;
+               font-size:18px; background-color:#096; border:1px solid #096; border-radius:4px; cursor:pointer;">确认出库</button>
+            </div>
+           </div>
+          </div>
+		</div>  
+		</form>        
+		<?php 
 	}
 }
 ?>

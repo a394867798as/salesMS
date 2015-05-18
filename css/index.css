@@ -282,6 +282,7 @@ border-color: #adb1b8 #a2a6ac #8d9096; border-radius:2px; box-shadow: 0 1px 0 rg
 .tongji_year{ margin-top:50px;}
 .tongji_year h4{ margin:0px auto; margin-bottom:10px; background:#0c9; color:#333; text-align:center; border:1px solid #999; border-radius:5px; width:900px;}
 .tongji_year td,.tongji_year th{ border-bottom:1px solid #666; border-right:1px solid #666; }
+<!-- -->
 .outstore_infor {width:1000px; min-height:500px; background-color:#fff; margin-left:10px; margin-right:30px; margin-bottom:20px; padding:10px 0 0 10px;}
 .outstore_infor h1{font-size:18px; color:#0c9;}
 .contract_need_outstore_list { width:900px; position:relative; margin:0 auto; }
@@ -305,3 +306,6 @@ border-color: #adb1b8 #a2a6ac #8d9096; border-radius:2px; box-shadow: 0 1px 0 rg
   clear: both;
   visibility: hidden;
 }
+.insert_outstore_info{ width:980px; margin-top:20px; border:1px solid #ddd; box-shadow:0px 0px 3px #ccc; background-color:#F9F9F9;}
+.outstore_form{ width:600px; margin:10px auto; }
+.outstore_form input{ height:20px; font-size:13px;}

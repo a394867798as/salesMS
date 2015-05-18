@@ -309,7 +309,7 @@ function get_search_value($value, $search = ""){
 		return $value;
 	}
 }
-function display_outdata_state($pro_value,$contract_array){
+function display_outdata_state($pro_value,$contract_array,$pro_id){
 	
 	$state = $pro_value['state'];
 	$maxdelivery = $pro_value['maxdelivery'];
@@ -325,7 +325,7 @@ function display_outdata_state($pro_value,$contract_array){
 			}else{
 				$value = "已定货 ?";
 			}
-			display_button($value, $state,$maxdelivery,$contractid);
+			display_button($value, $state,$maxdelivery,$contractid,$pro_id);
 			break;
 		case 2:
 			return "已经订货";
