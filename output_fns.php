@@ -232,6 +232,9 @@ function display_main_all($username, $name,$action ="",$position, $state="", $co
 		case "查看统计信息":
 			display_all_tongjixinxi($action,$state);
 			break;
+		case "产品出库":
+			display_product_outstore($action,$contractid);
+			break;
 	}
 }
 //输出主页内容
@@ -1142,6 +1145,91 @@ function show_tongji_information($action,$state = ""){
         </div>
 		<?php 
 		
+	}
+}
+function display_product_outstore($action,$contractid = ""){
+	echo $contractid;
+	@$out_me = $_POST['out_me'];
+	if($contractid == ""){
+		$query = "select * from contract";
+		$outstore_array = get_contract_query($query, $state = 1);
+		
+		?>
+		 <div class='outstore_infor'>
+		  <h1><?php echo $action; ?></h1>
+          <div class="contract_need_outstore_list">
+           
+          	<?php
+			 foreach ($outstore_array as $key=>$value){
+			 	if(isset($value['pro_list'])){
+			 		
+			?>
+            <form action="?action=产品出库&&contractid=<?php echo $value['contract_id']; ?>" method="post" >
+			<div class="contract_outstore_top">
+            <h2>合同号：<?php echo $value['contract_id']." ".$value['company_name']; ?></h2>
+            </div>
+            <div class="outstore_list">
+            
+            <?php foreach ($value['pro_list'] as $pro_value){ ?>
+            
+            <div class="contract-outstore-list-all">
+	         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
+	         <table style="float: left; width:400px;">
+	          <tr>
+				<td align="right">产品型号:</td>
+				<td ><span style="font-size:14px; color:blue; cursor:pointer;" class="pro_id" ><?php echo $pro_value['pro_id']; ?></span></td>
+			  </tr>
+			   <tr>
+				<td align="right">生产厂家:</td>
+				<td ><span style="font-size:14px; color:green; cursor:pointer;" ><?php echo $pro_value['brand']; ?></span></td>
+			  </tr>
+			  <tr>
+			   <td align="right">产品名称:</td>
+			   <td><span style="color:#666; font-size:14px;"><?php echo $pro_value['name']; ?></span></td>
+			  </tr>
+			  <tr>
+			   <td align="right">数量:</td>
+			   <td><?php echo $pro_value['quantity'].$pro_value['unit'] ?></td>
+			  </tr>
+              <tr>
+			   <td align="right">价格:</td>
+			   <td>
+			   <?php 
+			   $pro_price = $pro_value['quantity'] * $pro_value['pro_price'];
+			   $pro_price = number_format($pro_price, 2, '.', '');
+			   echo "<span style='color:#333;'>￥".$pro_price."<span>";
+			    ?>
+                </td>
+			  </tr>
+			 </table>
+             <div style="width:100px; float:left; margin-left:50px;">
+             <span style="color:red; font-size:14px;">选择要出库产品</span>
+			 <input type="checkbox" name="out_me[]" value="<?php echo $pro_value['pro_id']; ?>" style="" />
+             </div>
+	         </div>
+            <?php
+			 		}
+			?>
+            
+             <div style=" text-align:center; margin-bottom:10px;">
+              <button style="height:50px; line-height:50px; font-size:24px; cursor:pointer; color:#333;">确认选择产品出库</button>
+             </div>
+            </div>
+            <?php
+			
+				 }
+			
+			echo "</form>";
+			  }
+			  ?>
+           
+          </div>
+		 </div>
+		<?php 
+	}else{
+		$query = "select * from contract where contract_id = '".$contractid."'";
+		$outstore_array = get_contract_query($query, $state = 1);
+		print_r($outstore_array);
 	}
 }
 ?>

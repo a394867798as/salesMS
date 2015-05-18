@@ -254,10 +254,12 @@ function get_contract_query($var,$state = ""){
 		if($state == ""){
 			$query = "select * from contract_list
 				  where contract_id = '".$contract_id."'";
-		}else{
+		}elseif($state == 1){
 			$query = "select * from contract_list
 				  where contract_id = '".$contract_id."'
-				  and state =".$state;
+				  and state =".$state
+				." or state = 2";
+			
 		}
 		$pro_result = $conn->query($query);
 		$pro_number = 0;

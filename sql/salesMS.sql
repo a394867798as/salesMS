@@ -48,3 +48,16 @@ create table billing_information(
  bankName varchar(20) not null,
  ITIN varchar(20) not null
 )engine=InnoDB;
+CREATE TABLE `outstore` (
+ `contract_id` varchar(20) NOT NULL COMMENT '合同号',
+ `pro_id` varchar(30) NOT NULL,
+ `company_name` varchar(60) DEFAULT NULL,
+ `address` varchar(150) NOT NULL,
+ `tell` varchar(11) NOT NULL,
+ `name` varchar(15) NOT NULL,
+ `express_nam` varchar(20) NOT NULL,
+ `express_number` varchar(20) NOT NULL,
+ `store_nam` varchar(15) NOT NULL,
+ PRIMARY KEY (`contract_id`,`pro_id`),
+ CONSTRAINT `hetonghao` FOREIGN KEY (`contract_id`) REFERENCES `contract_list` (`contract_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
