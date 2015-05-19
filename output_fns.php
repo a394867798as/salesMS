@@ -235,6 +235,9 @@ function display_main_all($username, $name,$action ="",$position, $state="", $co
 		case "产品出库":
 			display_product_outstore($action,$contractid);
 			break;
+		case "开具发票":
+			display_bill_out($action,$contractid);
+			break;
 	}
 }
 //输出主页内容
@@ -851,11 +854,13 @@ function display_contract($contractid,$state = ""){
   <div class="contract-pro contractid_pro">
    <h1 style="color:#666;">订购产品:</h1>
    <?php
-    $i = 1;	
+    $i = 0;	
+    $pro_state = array();
    ?>
    <div class="contract-pro-list" style="width:980px;">
 	         <?php 
 	        foreach ($contract_array['pro_list'] as $pro_key => $pro_value){
+	        	$pro_state[$i] = $pro_value['state'];
 	      	 ?>
 	         <div class="contract-pro-list-all" style="width:980px; padding:5px;">
 	         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
@@ -891,12 +896,33 @@ function display_contract($contractid,$state = ""){
 	         </div>
              
 	         <?php 
-			
+	         $i++;
 	        }
-	        $i++;
+	       
 	         ?>
 	 </div>
+	 
   </div>
+  <div class='contract-pro bill_state' >
+	  <h1 style="color:#666;">发票状态：</h1>
+	  <div class="contract-pro-list-all" style="width:980px; padding:5px; margin-top:10px;">
+       
+      <?php 
+	  foreach($pro_state as $key =>$state_value){
+		  $key++;
+		  echo "<h1>第 ".$key." 项：".display_contract_state($state_value)."</h1>";
+	  }
+      if(check_all_state($pro_state, 3) == true){
+      	$value = "开具发票？";
+      	$contract_id = $contractid;
+      	$maxdelivery = $pro_value['maxdelivery'];
+      	display_button($value, 3, $maxdelivery,$contract_id);
+      }
+      
+      ?>
+      
+      </div>
+	 </div>
 </div>
 <?php
 }
@@ -948,9 +974,17 @@ function display_button($value,$state,$maxdelivery,$contractid = "",$pri_id = ''
 </div>
  		
 <?php 
+	}elseif($state == 3){
+	?>
+<div class="contract-button" style="float: left; margin:10px auto;">
+  <div class="contract-button-list">
+  <a href="?action=开具发票&contractid=<?php echo $contractid;  ?>">开具发票?</a>	
+  </div>     
+</div>
+	<?php 	
 	}else{
 ?>
-<div class="contract-button" style="float: right;">
+<div class="contract-button" style="float: left;">
 	         <div class="contract-button-list"> 
 	           <button class="state_button" style="width:148px; height:30px;" ><?php echo $value; ?></button>
 	           <input type="hidden" class="state_button_value" value="<?php echo $state; ?>" />
@@ -1369,6 +1403,12 @@ function display_product_outstore($action,$contractid = ""){
 		</div>  
 		</form>        
 		<?php 
+	}
+}
+function display_bill_out($action,$contractid = ""){
+	if($contractid == ""){	
+		$query = "select * from contract order by date desc";
+		$outstore_array = get_contract_query($query, $state = 3);
 	}
 }
 ?>

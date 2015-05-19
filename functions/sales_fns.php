@@ -262,6 +262,7 @@ function get_contract_query($var,$state = ""){
 				." or state = 2";
 			
 		}
+		
 		$pro_result = $conn->query($query);
 		$pro_number = 0;
 		while($pro_array = $pro_result->fetch_assoc()){
@@ -345,6 +346,12 @@ function display_outdata_state($pro_value,$contract_array,$pro_id){
 		case 2:
 			$value = '已发货？';
 			display_button($value, $state,$maxdelivery,$contractid,$pro_id);
+			break;
+		case 3:
+			display_out_store($contractid, $pro_id);
+			break;
+		default:
+			display_out_store($contractid, $pro_id);
 			break;
 		
 	}

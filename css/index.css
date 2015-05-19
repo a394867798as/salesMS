@@ -254,6 +254,8 @@ border-color: #adb1b8 #a2a6ac #8d9096; border-radius:2px; box-shadow: 0 1px 0 rg
 .contract-button-list a,.contract-button-list button{ color:#000; text-decoration:none;}
 .contract-button-list:hover{ background-color:#e7e9ec;}
 .contractid_pro{ margin:10px;border-radius:4px;}
+.bill_state{margin:10px;border-radius:4px;}
+.billi{}
 
 .customeroutput{width:1000px; min-height:500px; background-color:#fff; margin-left:10px; margin-right:30px; margin-bottom:20px; padding:10px 0 0 10px;}
 .customeroutput h1{ font-size:18px; color:#0c9;}
