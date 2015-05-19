@@ -632,17 +632,17 @@ function insertTypeForm($state){
 </div>
     <?php
 }
-function display_html_top(){
+function display_html_top($title){
 	?>
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>添加合同中。。。。</title>
+<title><?php echo $title;?></title>
 <link href="http://127.0.0.1/salesMS/css/lonading.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>添加合同中。。。。。</h1>
-	<?php 
+<h1><?php echo $title;?></h1>
+<?php 
 }
 function display_loading(){
 	?>
@@ -738,11 +738,11 @@ function display_contract_array($contract_array_list, $search = ""){
 	      
 	       <div class="contract-pro">
 	        
-	        <div class="contract-pro-list">
+	        <div class="contract-pro-list" style="margin-right:250px;">
 	         <?php 
 	        foreach ($value['pro_list'] as $pro_key => $pro_value){
 	      	 ?>
-	         <div class="contract-pro-list-all">
+	         <div class="contract-pro-list-all" >
 	         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
 	         <table>
 	          <tr>
@@ -765,7 +765,7 @@ function display_contract_array($contract_array_list, $search = ""){
 	        </div>
 	        <div class="contract-button">
 	         <div class="contract-button-list"> 
-	           <a href='http://127.0.0.1/salesMS/?action=查看合同&&contractid=<?php echo $key; ?>'>查看合同详情</a>
+	           <a href='?action=查看合同&&contractid=<?php echo $key; ?>'>查看合同详情</a>
 	         </div>
 	        </div>
 	       </div>
@@ -853,13 +853,13 @@ function display_contract($contractid,$state = ""){
    <?php
     $i = 1;	
    ?>
-   <div class="contract-pro-list" style="width:800px;">
+   <div class="contract-pro-list" style="width:980px;">
 	         <?php 
 	        foreach ($contract_array['pro_list'] as $pro_key => $pro_value){
 	      	 ?>
-	         <div class="contract-pro-list-all" style="width:800px; padding:5px;">
+	         <div class="contract-pro-list-all" style="width:980px; padding:5px;">
 	         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
-	         <table style="float: left;">
+	         <table style="float: left; width:350px;">
 	          <tr>
 				<td align="right">产品型号:</td>
 				<td ><span style="font-size:14px; color:blue; cursor:pointer;" class="pro_id" ><?php echo $pro_value['pro_id']; ?></span></td>
@@ -900,12 +900,50 @@ function display_contract($contractid,$state = ""){
 </div>
 <?php
 }
+//显示出库信息
+function display_out_store($contractid,$pro_id){
+ $outstore_array = get_outstore_info($contractid,$pro_id);
+ ?>
+ <div class="contract_outstore">
+ <table style="border:1px dashed #ddd;">
+  <tr>
+   <td colspan="2" align='center' >出库信息</td>
+  </tr>
+  <tr>
+   <td align="right" width="80px;">收货地址：</td>
+   <td width="350px"><?php echo $outstore_array['address']; ?></td>
+  </tr>
+  <tr>
+   <td align="right">联系电话：</td>
+   <td><?php echo $outstore_array['tell'];?></td>
+  </tr>
+  <tr>
+   <td align="right">联系人：</td>
+   <td><?php echo $outstore_array['name'] ?></td>
+  </tr>
+  <tr>
+   <td align="right">承运人：</td>
+   <td><?php echo $outstore_array['express_nam'] ?></td>
+  </tr>
+  <tr>
+   <td align="right">运单号：</td>
+   <td><?php echo $outstore_array['express_number']; ?></td>
+  </tr>
+  <tr>
+   <td align="right">出库时间：</td>
+   <td><?php echo $outstore_array['time']; ?></td>
+  </tr>
+  </table>
+ </div>
+ <?php 
+}
+//根据不同状态输出不同的按钮
 function display_button($value,$state,$maxdelivery,$contractid = "",$pri_id = ''){
 	if(($state == 1 && $maxdelivery == 0) || $state == 2 ){
 ?>
 <div class="contract-button" style="float: right;">
   <div class="contract-button-list">
-  <a href="http://127.0.0.1/salesMS/?action=产品出库&contractid=<?php echo $contractid;  ?>&out_me=<?php echo $pri_id; ?>">产品出库?</a>	
+  <a href="?action=产品出库&contractid=<?php echo $contractid;  ?>&out_me=<?php echo $pri_id; ?>">产品出库?</a>	
   </div>     
 </div>
  		
@@ -921,7 +959,9 @@ function display_button($value,$state,$maxdelivery,$contractid = "",$pri_id = ''
 <?php
 	} 
 }
+//输出客户信息
 function display_customer_information($action,$customerid = "",$page = ""){
+	//获取所有客户的数组
 	$customer_array = get_customer_array($customerid);
 ?>
 <script src="js/customer_update.js"></script>
@@ -990,7 +1030,7 @@ function display_customer_info($customerid = "",$page = ""){
           <li style="width:200px;">
           
 	         <div class="coustomer-button-list" > 
-	           <a href='http://127.0.0.1/salesMS/?action=修改客户信息&&customerid=<?php echo $key; ?>'>查看详细信息</a>
+	           <a href='?action=修改客户信息&&customerid=<?php echo $key; ?>'>查看详细信息</a>
 	         </div>
 	     </li>
          </ul>
@@ -1062,19 +1102,19 @@ function fenye_button($page = "",$count_page = ""){
 	echo "<div class='fenye' style='margin:20px 0 1px 0; '>";
 		if($page>1 && $page<$count_page){
 			echo "<div class='fenye_button' style='float:left;'>
-				 <a href='http://127.0.0.1/salesMS/?action=修改客户信息&&page=".($page>1?$page-1:$page)."'>上一页</a>
+				 <a href='?action=修改客户信息&&page=".($page>1?$page-1:$page)."'>上一页</a>
 				</div><div class='fenye_button' style='float:right'>
-				 <a  href='http://127.0.0.1/salesMS/?action=修改客户信息&&page=".($page<$count_page?$page+1:$page)."'>下一页</a>
+				 <a  href='?action=修改客户信息&&page=".($page<$count_page?$page+1:$page)."'>下一页</a>
 				</div>";
 		} 
 		if($page == 1){
 			echo "<div class='fenye_button' style='float:right'>
-				 <a href='http://127.0.0.1/salesMS/?action=修改客户信息&&page=".($page<$count_page?$page+1:$page)."'>下一页</a>
+				 <a href='?action=修改客户信息&&page=".($page<$count_page?$page+1:$page)."'>下一页</a>
 				</div>";
 		}
 		if($page == $count_page){
 			echo "<div class='fenye_button' style='float:left'>
-				 <a href='http://127.0.0.1/salesMS/?action=修改客户信息&&page=".($page>1?$page-1:$page)."'>上一页</a>
+				 <a href='?action=修改客户信息&&page=".($page>1?$page-1:$page)."'>上一页</a>
 				</div>";
 		}
         echo  "</div>";
@@ -1147,13 +1187,15 @@ function show_tongji_information($action,$state = ""){
 		
 	}
 }
+
+//输出产品出库信息
 function display_product_outstore($action,$contractid = ""){
 	$out_me = array();
 	@$out_me = $_POST['out_me'];
 	@$out_me[] = $_GET['out_me'];
 	
 	if($contractid == ""){
-		$query = "select * from contract";
+		$query = "select * from contract order by date desc";
 		$outstore_array = get_contract_query($query, $state = 1);
 		
 		?>
@@ -1236,7 +1278,7 @@ function display_product_outstore($action,$contractid = ""){
 			echo "<script>alert('请选择要出库产品');window.location = '?action=产品出库';</script>";
 			
 		}
-		$query = "select * from contract where contract_id = '".$contractid."'";
+		$query = "select * from contract where contract_id = '".$contractid."' ";
 		$outstore_array = get_contract_query($query, $state = 1);
 		$outstore_array = $outstore_array[$contractid];
 		

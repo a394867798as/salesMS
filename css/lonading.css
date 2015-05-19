@@ -95,4 +95,4 @@ h1{ color:green;}
             transform: rotate(360deg) translateY(-100px) rotate(-360deg);
   }
 }
-	
+.outstore_state{background_color:#096; border:1px solid #096; border-radius=4px; margin:10px auto; width:900px;}

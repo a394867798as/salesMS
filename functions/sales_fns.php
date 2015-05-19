@@ -234,6 +234,7 @@ function get_contract_list($contract_id="", $state="", $time=6){
 	
 	
 }
+//获取所有合同的数据
 function get_contract_query($var,$state = ""){
 	$contract_array_list = array();
 	//连接数据库
@@ -309,6 +310,20 @@ function get_search_value($value, $search = ""){
 		return $value;
 	}
 }
+//检测所有产品的状态
+function check_all_state($state_array,$value){
+	$count = count($state_array);
+	for($i=0; $i<$count; $i++){
+		if($state_array[$i] == $value){
+			continue;
+		}else{
+			return false;
+			break;
+		}
+	}
+	return true;
+}
+//检测每件商品的状态
 function display_outdata_state($pro_value,$contract_array,$pro_id){
 	
 	$state = $pro_value['state'];
@@ -328,18 +343,22 @@ function display_outdata_state($pro_value,$contract_array,$pro_id){
 			display_button($value, $state,$maxdelivery,$contractid,$pro_id);
 			break;
 		case 2:
-			return "已经订货";
+			$value = '已发货？';
+			display_button($value, $state,$maxdelivery,$contractid,$pro_id);
 			break;
-		case 3:
-			return "产品已经出库";
-			break;
-		case 4;
-		return "发票已开具";
-		break;
-		case 5;
-		return "<span style='color:#ccc;'>此项已经取消</span>";
-		break;
+		
 	}
+}
+//获取出库信息
+function get_outstore_info($contractid,$pro_id){
+	$query = "select * from outstore
+			 where pro_id = '".$pro_id."'
+			 and contract_id = '".$contractid."'";
+	$conn = db_connect();
+	
+	$result = $conn->query($query);
+	
+	return $result->fetch_assoc();
 }
 //获取所有客户信息 
 function get_customer_array($customerid = ""){

@@ -76,8 +76,17 @@ color:#666;outline:none;}
 .search .btn{ position:absolute;top:0;right:0;width:42px; height:40px; background:#0c9; border:none; cursor:pointer;}
 .outForm{margin:20px 5px 0 10px; min-width:900px; min-height:120px;}
 .outForm h2{ border-bottom:1px solid #0c9;}
+.outForm li{ width:240px; float:left;}
+.outForm li::after{
+	 content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
 
-.outpro_info{ font-size:12px; background-color:#CCC; width:240px; margin:5px 6px 0 0 ; height:170px; float:left; box-shadow: 0 0 5px #999;}
+.outpro_info{ font-size:12px; background-color:#CCC; width:240px; margin:5px 6px 0 0 ; height:180px; float:left; box-shadow: 0 0 5px #999;}
 .outpro_info input{ width:auto; background:#fff;}
 .outpro_info .pro_name{ width:60px;}
 .prompting{ font-size:16px;}
@@ -221,7 +230,7 @@ color:#666;outline:none;}
 .contract-address li{ margin-top:5px;}
 .contract-pro{ padding:15px; margin:0 auto; border:1px solid #ddd; border-radius:0 0 4px 4px;}
 .contract-pro h1,.contract-pro-list-all h1{ font-size:15px; color:green;}
-.contract-pro-list{ margin-right:250px; margin-top:10px; float:left; width:300px;}
+.contract-pro-list{ margin-right:0px; margin-top:10px; float:left; width:300px;}
 .contract-pro-list-all{border:1px solid #ddd; border-radius:4px; width:300px; margin-bottom:10px;}
 .contract-pro-list-all:after{
   content: ".";
@@ -309,3 +318,13 @@ border-color: #adb1b8 #a2a6ac #8d9096; border-radius:2px; box-shadow: 0 1px 0 rg
 .insert_outstore_info{ width:980px; margin-top:20px; border:1px solid #ddd; box-shadow:0px 0px 3px #ccc; background-color:#F9F9F9;}
 .outstore_form{ width:600px; margin:10px auto; }
 .outstore_form input{ height:20px; font-size:13px;}
+.contract_outstore{  margin-left:350px;}
+.contract_outstore:after{
+  content: ".";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+}
+.contract_outstore td{ color:#666; font-family:"Courier New"; font-size:14px; border-bottom:1px solid #ddd;}
