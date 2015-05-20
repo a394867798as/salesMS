@@ -344,6 +344,7 @@ function display_select_proinfo($action,$state = ""){
 </div>
 <?php
 }
+//输出产品信息
 function display_product_information(){
 	
 	$brand_array = array('siemens','HEIDENHAIN','ZIEHL-ABEGG','EBMPAPST','其它');
@@ -403,6 +404,7 @@ function display_product_information(){
 	}
 	$conn->close();
 }
+//输出发布合同表单
 function display_submit_contract($name,$position,$username,$state = ""){
 	if($state != ""){
 		echo "<script src='js/checkstate.js'></script>";
@@ -575,6 +577,7 @@ function display_submit_contract($name,$position,$username,$state = ""){
 
 <?php 
 }
+//如果产品不存在，插入新产品
 function insertTypeForm($state){
 	?>
 <div id="insertType" style="display:none;" >
@@ -635,6 +638,7 @@ function insertTypeForm($state){
 </div>
     <?php
 }
+//插入页面头部
 function display_html_top($title){
 	?>
 <html >
@@ -647,6 +651,7 @@ function display_html_top($title){
 <h1><?php echo $title;?></h1>
 <?php 
 }
+//等待效果
 function display_loading(){
 	?>
 
@@ -664,6 +669,7 @@ function display_loading(){
 </html>
 	<?php 
 }
+//根据不同状态，显示不同的合同信息
 function display_select_contract($action,$state = "",$contractid = ""){
     echo "<script src='js/select_contract.js'></script>";
 	if($contractid != "" && $state == ""){
@@ -674,14 +680,17 @@ function display_select_contract($action,$state = "",$contractid = ""){
 		display_contract($contractid,$state);
 		
 	}
-	
+	if($contractid == "" && $state != ""){
+		display_all_contract($state);
+	}
 	if($state == "" && $contractid == ""){
 		display_all_contract();	
 		
 	}
 	
 }
-function display_all_contract(){
+//显示所有合同，并可以搜索
+function display_all_contract($state = ""){
 	
 	$contract_array_list = get_contract_list();
 	
@@ -777,9 +786,11 @@ function display_contract_array($contract_array_list, $search = ""){
 	     <?php 
 	     }
 }
+//根据不同状态输出单个合同
 function display_contract($contractid,$state = ""){
 	$contract_array_list = get_contract_list($contractid);
 	$contract_array = $contract_array_list[$contractid];
+	
 ?>
 <div class="contractinput">
  <?php
@@ -918,13 +929,103 @@ function display_contract($contractid,$state = ""){
       	$maxdelivery = $pro_value['maxdelivery'];
       	display_button($value, 3, $maxdelivery,$contract_id);
       }
-      
+      //判断合同发票状态
+      if(check_all_state($pro_state, 4)){
+      	
+      	$bill_info_array = check_billing_information($contractid);
+      	?>
+      	 <h1 style="text-align:center;">
+      	 合同所涉及产品已经全部出库，并开具发票
+         <?php   
+            echo $bill_info_array == false?"<span style='color:red;'>（缺少开票信息）</span>":"<span style='color:green;'>(有开票信息)</span>";
+          ?>
+          <br/>开票时间：<?php echo $contract_array['billoutDate'] ?>
+          </h1>
+      	<?php 
+      	//判断是否有开票信息
+      	if($bill_info_array != false){
+      		
+      	}
+      		?>
+      		
+      		<div class="contract-button" style="width:980px; margin-top:10px;" id="update_bill_button">
+                     <div class="contract-button-list" style="margin:0 auto;"> 
+                      <a href='?action=开具发票&&contractid=<?php echo $contractid; ?>'>
+                      <?php echo $bill_info_array==false?"添加开票资料":"修改开票资料"; ?></a> 
+                     </div>
+             </div>
+      		<?php 
+
+      }
       ?>
       
       </div>
 	 </div>
 </div>
+
 <?php
+
+}
+//插入开票资料表单
+function insert_bill_Form($bill_info_array = ""){
+	?>
+<div id="insertType" >
+
+ <div class="proinput">
+ <div id="close" onclick="divClose()"><a href="javascript:">×</a></div>
+<div id="goback" onclick="divClose()"><a href="javascript:"><span style="color:#C30; font-size:14px;"><</span>返回</a></div>
+ <h1>修改/录入开票资料</h1>
+ <form action="" onSubmit="return false" method="post">
+ <div class="infoForm">
+   <div class="item">
+   <em>*</em><span>产品型号：</span>
+   <div class="form1">
+    <input type="text"  maxlength="20"  id="pro_id"  name="pro_id" autocomplete="off"  tabindex="1" required />
+    <div class="text">请输入产品型号</div>
+   </div>
+  </div>
+  <div class="item">
+   <em>*</em><span>产品名称：</span>
+   <div class="form1">
+    <input type="text"  maxlength="20"  id="pro_name" name="pro_name"  autocomplete="off"  tabindex="2" required  value="电气配件"/>
+   </div>
+  </div>
+ <div class="item">
+  <span> <em>*</em>产品品牌：</span>
+   <div class="form1">
+    <select name="brand" id="brand" style="float:left; height:25px;" tabindex="3">
+     <option value="siemens">siemens</option>
+     <option value="HEIDENHAIN">HEIDENHAIN</option>
+     <option value="EBMPAPST">EBMPAPST</option>
+     <option value="ZIEHL-ABEGG">ZIEHL-ABEGG</option>
+     <option value="其它">其它</option>
+    </select>
+    <input id="otherBrand" type="text"  style="width:50px; height:20px; float:left; display:none;"/>
+   </div>
+  </div>
+  <div class="item">
+   <em>*</em><span>计量单位：</span>
+   <div class="form1">
+    <select name="unit" id="unit" tabindex="4">
+     <option value="个">个</option>
+     <option value="台">台</option>
+     <option value="件">件</option>
+    </select>
+   </div>
+  </div>
+  <div class="item">
+   <div class="form1">
+    <button class="btn-submit" id="insertProButton" style="height:30px;">提交</button>
+   </div>
+   </div>
+   </form>
+ </div>
+ <div id="waringInformation">
+ <span></span>
+ </div>
+</div>
+</div>
+    <?php
 }
 //显示出库信息
 function display_out_store($contractid,$pro_id){
@@ -978,7 +1079,7 @@ function display_button($value,$state,$maxdelivery,$contractid = "",$pri_id = ''
 	?>
 <div class="contract-button" style="float: left; margin:10px auto;">
   <div class="contract-button-list">
-  <a href="?action=开具发票&contractid=<?php echo $contractid;  ?>">开具发票?</a>	
+  <a href="functions/update_sateforbill.php?contractid=<?php echo $contractid;  ?>">开具发票?</a>	
   </div>     
 </div>
 	<?php 	
@@ -1405,10 +1506,108 @@ function display_product_outstore($action,$contractid = ""){
 		<?php 
 	}
 }
+//输出需要开具发票的合同
 function display_bill_out($action,$contractid = ""){
 	if($contractid == ""){	
-		$query = "select * from contract order by date desc";
-		$outstore_array = get_contract_query($query, $state = 3);
+		$query = "select * from contract order by date asc";
+		$outstore_array = get_contract_query($query);
+		
+		//遍历数据，获取单个合同的信息
+		
+		echo "<div class='outBill_contract'>";
+		echo "<h1>".$action."</h1>";
+		foreach ($outstore_array as $contractid=>$contract_value){
+			$billing_array = check_billing_information($contract_value['customer_id']);//获取客户的开票信息
+			$i = 0;
+			$pro_state = array();//单个合同包含的所有产品信息
+			foreach ($contract_value['pro_list'] as $pro_key => $pro_value ){
+				$pro_state[$i] = $pro_value['state'];
+				$i++;
+			}
+			if(check_all_state($pro_state, 3)){
+				?>
+                <div class="contract_list">
+                  <div class="contract-box">
+                   <div class="contract-top">
+                   <table>
+                     <tr>
+                      <td width="110px">已签合同</td>
+                      <td width="90px">合同总额</td>
+                      <td width="200px">单位名称</td>
+                      <td width="400px" align="right">合同编号</td>
+                     </tr>
+                     <tr>
+                      <td style="color:#272727;"><?php echo date("Y年m月d日",strtotime($contract_value['date'])); ?></td>
+                      <td style="color:#272727;"> ￥ <?php echo $contract_value['amount']; ?></td>
+                      <td> 
+                      <div class="contract-name">
+                      <span style="margin-bottom:5px;">
+                      <?php 
+                      echo get_search_value($contract_value['company_name']);
+                      ?></span>^
+                      
+                      </div>
+                      </td>
+                      <td align="right" style="color:#093;"><?php echo get_search_value($contract_value['contract_id']); ?></td>
+                     </tr>
+                    </table>
+                   </div>
+                   
+                  </div>
+                  <div class="contract-pro">
+                    <div class="contract-pro-list" style="margin-right:0px; width:850px; margin-bottom:10px;">
+                     <h1 style="text-align:center; wi">合同所涉及产品已经全部出库，请选择开具发票
+                     <?php   
+                      echo $billing_array == false?"<span style='color:red;'>（缺少开票信息）</span>":"<span style='color:green;'>(有开票信息)</span>";
+                      ?>
+                      </h1>
+                     <table width="850px;" style='border:1px solid #000; border-radius:4px;' cellspacing="0">
+                     <tr>
+                      <td align="center" width="250px">产品型号</td>
+                      <td align="center" width="100px;">名称</td>
+                      <td align="center" width="50px">数量</td>
+                      <td align="center" width="50px">单位</td>
+                      <td align="center" width="100px">单价</td>
+                      <td align="center" width="100px">总价</td>
+                     </tr>
+                     <?php 
+                    foreach ($contract_value['pro_list'] as $pro_key => $pro_value){
+                     ?>
+                     <tr>
+                      <td align="center"><?php echo $pro_value['pro_id']; ?></td>
+                      <td align="center"><?php echo $pro_value['name']; ?></td>
+                      <td align="center"><?php echo $quantity = $pro_value['quantity']; ?></td>
+                      <td align="center"><?php echo $pro_value['unit']; ?></td>
+                      <td align="center"><?php echo $pro_price = $pro_value['pro_price'];?></td>
+                      <td align="center"><?php echo number_format($pro_price * $quantity,2,'.','') ?></td>
+                     </tr>
+                     <?php 
+                    }
+                     ?>
+                      </table>
+                    </div>
+                   
+                    <div class="contract-button" style="width:400px; ">
+                     <div class="contract-button-list" style="margin:0 auto;"> 
+                      <a href='?action=开具发票&&contractid=<?php echo $contractid; ?>'>
+                      <?php echo $billing_array==false?"添加开票资料":"修改开票资料"; ?></a> 
+                     </div>
+                    </div>
+                   
+                    <div class="contract-button" style="width:400px;">
+                     <div class="contract-button-list" style="margin:0 auto;"> 
+                       
+                       <a href='functions/update_sateforbill.php?contractid=<?php echo $contractid;?>'>已开发票?</a>
+                     </div>
+                    </div>
+                  
+                </div>
+                
+                <?php
+			}
+			
+		}
+		echo "</div>";
 	}
 }
 ?>

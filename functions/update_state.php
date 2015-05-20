@@ -13,7 +13,7 @@ if($state != ""){
 	
 	
 	$result = $conn->query($query) or die($conn->error);
-	
+	$conn->close();
 	if($result){
 		$date['error'] = 1;
 	}else{

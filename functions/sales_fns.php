@@ -422,4 +422,21 @@ function select_char_length($value,$number){
 	}
 
 }
+//检测客户是否已经有开票资料
+function check_billing_information($customer_id){
+	$conn = db_connect();
+	$billing_array = array();
+	$query = "select * from billing_information
+			  where customer_id = '".$customer_id."'";
+	$result = $conn->query($query);
+	if($result->num_rows == 0){
+		$conn->close();
+		return false;
+	}else{
+		$billing_array = $result->fetch_assoc();
+		$conn->close();
+		
+		return $billing_array;
+	}
+}
 ?>

@@ -231,6 +231,7 @@ color:#666;outline:none;}
 .contract-pro{ padding:15px; margin:0 auto; border:1px solid #ddd; border-radius:0 0 4px 4px;}
 .contract-pro h1,.contract-pro-list-all h1{ font-size:15px; color:green;}
 .contract-pro-list{ margin-right:0px; margin-top:10px; float:left; width:300px;}
+.contract-pro-list td{ border-bottom:1px solid #ddd; border-right:1px solid #ddd;}
 .contract-pro-list-all{border:1px solid #ddd; border-radius:4px; width:300px; margin-bottom:10px;}
 .contract-pro-list-all:after{
   content: ".";
@@ -288,8 +289,8 @@ border-color: #adb1b8 #a2a6ac #8d9096; border-radius:2px; box-shadow: 0 1px 0 rg
   clear: both;
   visibility: hidden;
 }
-.tongji_informattion{width:1000px; min-height:500px; background-color:#fff; margin-left:10px; margin-right:30px; margin-bottom:20px; padding:10px 0 0 10px;}
-.tongji_informattion h1{font-size:18px; color:#0c9;}
+.tongji_informattion,.outBill_contract{width:1000px; min-height:500px; background-color:#fff; margin-left:10px; margin-right:30px; margin-bottom:20px; padding:10px 0 0 10px;}
+.tongji_informattion h1,.outBill_contract h1{font-size:18px; color:#0c9;}
 .tongji_year{ margin-top:50px;}
 .tongji_year h4{ margin:0px auto; margin-bottom:10px; background:#0c9; color:#333; text-align:center; border:1px solid #999; border-radius:5px; width:900px;}
 .tongji_year td,.tongji_year th{ border-bottom:1px solid #666; border-right:1px solid #666; }
@@ -330,3 +331,4 @@ border-color: #adb1b8 #a2a6ac #8d9096; border-radius:2px; box-shadow: 0 1px 0 rg
   visibility: hidden;
 }
 .contract_outstore td{ color:#666; font-family:"Courier New"; font-size:14px; border-bottom:1px solid #ddd;}
+

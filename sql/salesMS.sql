@@ -63,3 +63,5 @@ CREATE TABLE `outstore` (
  PRIMARY KEY (`contract_id`,`pro_id`),
  CONSTRAINT `hetonghao` FOREIGN KEY (`contract_id`) REFERENCES `contract_list` (`contract_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+//执行sql语句
+ALTER TABLE `contract` ADD `billoutDate` DATE NULL AFTER `remarks`;

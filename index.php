@@ -34,6 +34,10 @@ if($action == ""){
 if($action == "发布合同"){
 	insertTypeForm($state);
 }
+if($action == "查看合同" && $contractid != "" ){
+	
+	insert_bill_Form();
+}
 
 display_center_content($_SESSION['username'], $_SESSION['name'],$action,$_SESSION['position'],$state,$contractid,$customerid,$page);
 do_html_footer();
