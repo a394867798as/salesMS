@@ -426,9 +426,11 @@ function select_char_length($value,$number){
 function check_billing_information($customer_id){
 	$conn = db_connect();
 	$billing_array = array();
+	
 	$query = "select * from billing_information
 			  where customer_id = '".$customer_id."'";
-	$result = $conn->query($query);
+	$result = $conn->query($query) or die($conn->error);
+	
 	if($result->num_rows == 0){
 		$conn->close();
 		return false;
@@ -438,5 +440,41 @@ function check_billing_information($customer_id){
 		
 		return $billing_array;
 	}
+}
+//获取用户的开票信息
+function get_billing_information($contractid){
+	$conn = db_connect();
+	//查询该合同的客户id号
+	$query = "select customer_id from contract 
+			  where contract_id = '".$contractid."'";
+	$result = $conn->query($query);
+	$customer_array= $result->fetch_assoc();
+	$customer_id = $customer_array['customer_id'];
+	//查询客户的开票资料
+	$billing_array = array();
+	$query = "select * from billing_information
+			  where customer_id = '".$customer_id."'";
+	$result = $conn->query($query);
+	if($result->num_rows == 0){
+		$conn->close();
+		$billing_array['customer_id'] = $customer_id;
+	}else{
+		$billing_array = $result->fetch_assoc();
+		$conn->close();
+	}
+		return $billing_array;
+}
+//获取员工信息
+function get_account_information(){
+	$conn = db_connect();
+	$query = "select * from account";
+	$result = $conn->query( $query);
+	$account_array = array();
+	
+	while($array = $result->fetch_assoc()){
+		$account_array[$array['accountId']] = $array;
+	}
+	
+	return $account_array;
 }
 ?>

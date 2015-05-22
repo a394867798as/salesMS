@@ -34,9 +34,9 @@ if($action == ""){
 if($action == "发布合同"){
 	insertTypeForm($state);
 }
-if($action == "查看合同" && $contractid != "" ){
+if( $action == "查看合同" && $contractid != ""){
 	
-	insert_bill_Form();
+	insert_bill_Form($contractid);
 }
 
 display_center_content($_SESSION['username'], $_SESSION['name'],$action,$_SESSION['position'],$state,$contractid,$customerid,$page);

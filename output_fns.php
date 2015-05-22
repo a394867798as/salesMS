@@ -29,11 +29,11 @@ function do_html_index_header($title){
 
 <script src="js/insert_proinfo.js"></script>
 <script src="js/out_proinfo.js"></script>
-<script src="js/create_contract.js"></script>
+
 </head>
 <body>
 <header>
- <h1><?php echo $title;?></h1>
+ <h1><a href="<?php SERVER_NAME ?>/salesMS/"><?php echo $title;?></a> </h1>
  <?php out_account_info(); ?>
 </header>
 <?php 
@@ -238,6 +238,12 @@ function display_main_all($username, $name,$action ="",$position, $state="", $co
 		case "开具发票":
 			display_bill_out($action,$contractid);
 			break;
+		case "添加新员工":
+			display_staff_insert($action);
+			break;
+		case "查看员工信息":
+			display_account_info($action);
+			break;
 	}
 }
 //输出主页内容
@@ -410,7 +416,7 @@ function display_submit_contract($name,$position,$username,$state = ""){
 		echo "<script src='js/checkstate.js'></script>";
 	}
 ?>
-
+<script src="js/create_contract.js"></script>
 <div class="contractinput">
  <h1 align="center">工业备件合同</br>CONTRACT</h1>
  <form action="functions/insert_contract.php" method="post" name="contract">
@@ -877,7 +883,7 @@ function display_contract($contractid,$state = ""){
 	         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
 	         <table style="float: left; width:350px;">
 	          <tr>
-				<td align="right">产品型号:</td>
+				<td align="right" colspan="">产品型号:</td>
 				<td ><span style="font-size:14px; color:blue; cursor:pointer;" class="pro_id" ><?php echo $pro_value['pro_id']; ?></span></td>
 			  </tr>
 			   <tr>
@@ -927,12 +933,48 @@ function display_contract($contractid,$state = ""){
       	$value = "开具发票？";
       	$contract_id = $contractid;
       	$maxdelivery = $pro_value['maxdelivery'];
+      	//输出开票按钮
+      	$bill_info_array = check_billing_information($contract_array['customer_id']);
+      	 
+      	?>
+      	      	 <h1 style="text-align:center;">
+      	      	 合同所涉及产品已经全部出库，需要开具发票
+      	         <?php   
+      	            echo $bill_info_array == false?"<span style='color:red;'>（缺少开票信息）</span>":"<span style='color:green;'>(有开票信息)</span>";
+      	          ?>
+      	         
+      	          </h1>
+      	      	<?php 
+      	      	//判断是否有开票信息
+      	      	if($bill_info_array != false){
+      				
+      	      		echo "<table align='center'>
+      					  <tr ><td colspan='2' align='center' style='border:1px solid #ccc; bachground-color:#ddd;'>开票信息</td></tr>
+      					  <tr><td align='right'>公司名称：</td><td>".$bill_info_array['name']."</td></tr>
+      					  <tr><td align='right'>开票地址：</td><td>".$bill_info_array['address']."</td></tr>
+      					  <tr><td align='right'>注册电话：</td><td>".$bill_info_array['tell']."</td></tr>
+      					  <tr><td align='right'>开户行：</td><td>".$bill_info_array['bankName']."</td></tr>
+      					  <tr><td align='right'>银行账号：</td><td>".$bill_info_array['bankNumber']."</td></tr>
+      	 				  <tr><td align='right'>纳税人识别号：</td><td>".$bill_info_array['ITIN']."</td></tr>
+      					 </table>";
+      	      		
+      	      	}
+      	      		?>
+      	      		
+      	      		<div class="contract-button" style="width:980px; margin-top:10px;" >
+      	                     <div class="contract-button-list" style="margin:0 auto;" id="update_bill_button"> 
+      	                      <a >
+      	                      <?php echo $bill_info_array==false?"添加开票资料":"修改开票资料"; ?></a> 
+      	                     </div>
+      	             </div>
+      	      		<?php 
       	display_button($value, 3, $maxdelivery,$contract_id);
       }
       //判断合同发票状态
       if(check_all_state($pro_state, 4)){
       	
-      	$bill_info_array = check_billing_information($contractid);
+      	$bill_info_array = check_billing_information($contract_array['customer_id']);
+      	
       	?>
       	 <h1 style="text-align:center;">
       	 合同所涉及产品已经全部出库，并开具发票
@@ -944,13 +986,23 @@ function display_contract($contractid,$state = ""){
       	<?php 
       	//判断是否有开票信息
       	if($bill_info_array != false){
+			
+      		echo "<table align='center'>
+				  <tr ><td colspan='2' align='center' style='border:1px solid #ccc; bachground-color:#ddd;'>开票信息</td></tr>
+				  <tr><td align='right'>公司名称：</td><td>".$bill_info_array['name']."</td></tr>
+				  <tr><td align='right'>开票地址：</td><td>".$bill_info_array['address']."</td></tr>
+				  <tr><td align='right'>注册电话：</td><td>".$bill_info_array['tell']."</td></tr>
+				  <tr><td align='right'>开户行：</td><td>".$bill_info_array['bankName']."</td></tr>
+				  <tr><td align='right'>银行账号：</td><td>".$bill_info_array['bankNumber']."</td></tr>
+ 				  <tr><td align='right'>纳税人识别号：</td><td>".$bill_info_array['ITIN']."</td></tr>
+				 </table>";
       		
       	}
       		?>
       		
-      		<div class="contract-button" style="width:980px; margin-top:10px;" id="update_bill_button">
-                     <div class="contract-button-list" style="margin:0 auto;"> 
-                      <a href='?action=开具发票&&contractid=<?php echo $contractid; ?>'>
+      		<div class="contract-button" style="width:980px; margin-top:10px;" >
+                     <div class="contract-button-list" style="margin:0 auto;" id="update_bill_button"> 
+                      <a >
                       <?php echo $bill_info_array==false?"添加开票资料":"修改开票资料"; ?></a> 
                      </div>
              </div>
@@ -967,9 +1019,14 @@ function display_contract($contractid,$state = ""){
 
 }
 //插入开票资料表单
-function insert_bill_Form($bill_info_array = ""){
+function insert_bill_Form($contract_id){
+	
+	$bill_info_array = get_billing_information($contract_id);
+	if(!isset($bill_info_array['name'])){
+	
 	?>
-<div id="insertType" >
+<script src="js/insert_billing.js"></script>
+<div id="insertType" style="display: none;" >
 
  <div class="proinput">
  <div id="close" onclick="divClose()"><a href="javascript:">×</a></div>
@@ -978,54 +1035,150 @@ function insert_bill_Form($bill_info_array = ""){
  <form action="" onSubmit="return false" method="post">
  <div class="infoForm">
    <div class="item">
-   <em>*</em><span>产品型号：</span>
+   <span>客户id号：</span>
    <div class="form1">
-    <input type="text"  maxlength="20"  id="pro_id"  name="pro_id" autocomplete="off"  tabindex="1" required />
-    <div class="text">请输入产品型号</div>
+    
+    <div class="text"><span id="customer_id"><?php echo $bill_info_array['customer_id'];?></span></div>
    </div>
   </div>
   <div class="item">
-   <em>*</em><span>产品名称：</span>
+   <em>*</em><span>客户名称：</span>
    <div class="form1">
-    <input type="text"  maxlength="20"  id="pro_name" name="pro_name"  autocomplete="off"  tabindex="2" required  value="电气配件"/>
+    <input type="text"  style="width: 250px;"  id="bill_name" name="bill_name"  autocomplete="off"  tabindex="2" required />
    </div>
   </div>
  <div class="item">
-  <span> <em>*</em>产品品牌：</span>
+  <span> <em>*</em>注册地址：</span>
    <div class="form1">
-    <select name="brand" id="brand" style="float:left; height:25px;" tabindex="3">
-     <option value="siemens">siemens</option>
-     <option value="HEIDENHAIN">HEIDENHAIN</option>
-     <option value="EBMPAPST">EBMPAPST</option>
-     <option value="ZIEHL-ABEGG">ZIEHL-ABEGG</option>
-     <option value="其它">其它</option>
-    </select>
-    <input id="otherBrand" type="text"  style="width:50px; height:20px; float:left; display:none;"/>
+    
+    <input id="bill_address" type="text"  style="width:300px; height:20px; " required />
    </div>
   </div>
   <div class="item">
-   <em>*</em><span>计量单位：</span>
+   <span>注册电话：</span>
    <div class="form1">
-    <select name="unit" id="unit" tabindex="4">
-     <option value="个">个</option>
-     <option value="台">台</option>
-     <option value="件">件</option>
-    </select>
+   <input id="bill_tell" type="text"  style="width:200px; height:20px; "/>
+   
+   </div>
+  </div>
+  <div class="item">
+   <em>*</em><span>开户行：</span>
+   <div class="form1">
+   <input id="bill_bankName" type="text"  style="width:200px; height:20px; " required />
+   
+   </div>
+  </div>
+  <div class="item">
+   <em>*</em><span>银行账号：</span>
+   <div class="form1">
+   <input id="bill_bankNumber" type="text"  style="width:250px; height:20px; " required />
+   
+   </div>
+  </div>
+  <div class="item">
+   <em>*</em><span>纳税号：</span>
+   <div class="form1">
+   <input id="bill_itin" type="text"  style="width:250px; height:20px; " required />
+   
    </div>
   </div>
   <div class="item">
    <div class="form1">
-    <button class="btn-submit" id="insertProButton" style="height:30px;">提交</button>
+    <button class="btn-submit" id="bill_insert_btn" style="height:30px;">提交</button>
    </div>
    </div>
    </form>
  </div>
  <div id="waringInformation">
  <span></span>
+
+    <button class="btn-submit" id="enter_true" style="height:30px; margin-top:100px; display:none;" onclick="divClose()" >确认</button>
+ 
  </div>
 </div>
 </div>
     <?php
+	}else{
+		?>
+<script src="js/insert_billing.js"></script>
+<div id="insertType" style="display: none;" >
+
+ <div class="proinput">
+ <div id="close" onclick="divClose()"><a href="javascript:">×</a></div>
+<div id="goback" onclick="divClose()"><a href="javascript:"><span style="color:#C30; font-size:14px;"><</span>返回</a></div>
+ <h1>修改/录入开票资料</h1>
+ <form action="" onSubmit="return false" method="post">
+ <div class="infoForm">
+   <div class="item">
+   <span>客户id号：</span>
+   <div class="form1">
+    
+    <div class="text"><span id="customer_id"><?php echo $bill_info_array['customer_id'];?></span></div>
+   </div>
+  </div>
+  <div class="item">
+   <em>*</em><span>客户名称：</span>
+   <div class="form1">
+    <input type="text"  style="width: 250px;" value="<?php echo $bill_info_array['name']; ?>"  id="bill_name" name="bill_name"  autocomplete="off"  tabindex="2" required />
+   </div>
+  </div>
+ <div class="item">
+  <span> <em>*</em>注册地址：</span>
+   <div class="form1">
+    
+    <input id="bill_address" type="text"  style="width:300px; height:20px; " 
+    value="<?php echo $bill_info_array['address']; ?>" required />
+   </div>
+  </div>
+  <div class="item">
+   <span>注册电话：</span>
+   <div class="form1">
+   <input id="bill_tell" type="text"  style="width:200px; height:20px; "
+   value="<?php echo $bill_info_array['tell']; ?>"/>
+   
+   </div>
+  </div>
+  <div class="item">
+   <em>*</em><span>开户行：</span>
+   <div class="form1">
+   <input id="bill_bankName" type="text"  style="width:200px; height:20px; "
+   value="<?php echo $bill_info_array['bankName']; ?>" required />
+   
+   </div>
+  </div>
+  <div class="item">
+   <em>*</em><span>银行账号：</span>
+   <div class="form1">
+   <input id="bill_bankNumber" type="text"  style="width:250px; height:20px; "
+   value="<?php echo $bill_info_array['bankNumber']; ?>" required />
+   
+   </div>
+  </div>
+  <div class="item">
+   <em>*</em><span>纳税号：</span>
+   <div class="form1">
+   <input id="bill_itin" type="text"  style="width:250px; height:20px; "
+   value="<?php echo $bill_info_array['ITIN']; ?>" required />
+   
+   </div>
+  </div>
+  <div class="item">
+   <div class="form1">
+    <button class="btn-submit" id="bill_insert_btn" style="height:30px;">提交</button>
+   </div>
+   </div>
+   </form>
+ </div>
+ <div id="waringInformation">
+ <span></span>
+ 
+    <button class="btn-submit" id="enter_true" style="height:30px; margin-top:100px;display:none;" onclick="divClose()" >确认</button>
+   
+ </div>
+</div>
+</div>
+		<?php 
+	}
 }
 //显示出库信息
 function display_out_store($contractid,$pro_id){
@@ -1077,9 +1230,9 @@ function display_button($value,$state,$maxdelivery,$contractid = "",$pri_id = ''
 <?php 
 	}elseif($state == 3){
 	?>
-<div class="contract-button" style="float: left; margin:10px auto;">
-  <div class="contract-button-list">
-  <a href="functions/update_sateforbill.php?contractid=<?php echo $contractid;  ?>">开具发票?</a>	
+<div class="contract-button"  style="float: left;  width:980px;">
+  <div class="contract-button-list" style="margin:10px auto;">
+  <a href="functions/update_sateforbill.php?contractid=<?php echo $contractid;  ?>">已经开具发票?</a>	
   </div>     
 </div>
 	<?php 	
@@ -1525,6 +1678,7 @@ function display_bill_out($action,$contractid = ""){
 				$i++;
 			}
 			if(check_all_state($pro_state, 3)){
+				insert_bill_Form($contractid);
 				?>
                 <div class="contract_list">
                   <div class="contract-box">
@@ -1585,11 +1739,26 @@ function display_bill_out($action,$contractid = ""){
                     }
                      ?>
                       </table>
+                      
                     </div>
-                   
+                   <?php 
+                   if($billing_array != false){
+                   		
+	                   	echo "<table align='center'>
+					  <tr ><td colspan='2' align='center' style='border:1px solid #ccc; bachground-color:#ddd;'>开票信息</td></tr>
+					  <tr><td align='right'>公司名称：</td><td>".$billing_array['name']."</td></tr>
+					  <tr><td align='right'>开票地址：</td><td>".$billing_array['address']."</td></tr>
+					  <tr><td align='right'>注册电话：</td><td>".$billing_array['tell']."</td></tr>
+					  <tr><td align='right'>开户行：</td><td>".$billing_array['bankName']."</td></tr>
+					  <tr><td align='right'>银行账号：</td><td>".$billing_array['bankNumber']."</td></tr>
+	 				  <tr><td align='right'>纳税人识别号：</td><td>".$billing_array['ITIN']."</td></tr>
+					 </table>";
+	                   
+	                  }
+                   ?>
                     <div class="contract-button" style="width:400px; ">
-                     <div class="contract-button-list" style="margin:0 auto;"> 
-                      <a href='?action=开具发票&&contractid=<?php echo $contractid; ?>'>
+                     <div class="contract-button-list" style="margin:0 auto;" id="update_bill_button"> 
+                      <a >
                       <?php echo $billing_array==false?"添加开票资料":"修改开票资料"; ?></a> 
                      </div>
                     </div>
@@ -1609,5 +1778,76 @@ function display_bill_out($action,$contractid = ""){
 		}
 		echo "</div>";
 	}
+}
+function display_staff_insert($action){
+	?>
+<script src="js/insert_account.js"></script>
+<div class="proinput">
+ <h1><?php echo $action; ?></h1>
+ <form action="" onSubmit="return false" method="post">
+ <div class="infoForm">
+   <div class="item">
+   <em>*</em><span>员工手机号：</span>
+   <div class="form1">
+    <input type="text"  maxlength="20"  id="cell_phone"  name="cell_phone" autocomplete="off"  tabindex="1" required />
+    <div class="text">请输入员工手机号</div>
+   </div>
+  </div>
+  <div class="item">
+   <em>*</em><span>员工姓名：</span>
+   <div class="form1">
+    <input type="text"  maxlength="20"  id="starff_name" name="starff_name"  autocomplete="off"  tabindex="2" required  />
+   </div>
+  </div>
+ <div class="item">
+  <span> <em>*</em>员工职位：</span>
+   <div class="form1">
+    <select name="postion" id="postion" style="float:left; height:25px; width:100px;" tabindex="3">
+     <option value="0">经理</option>
+     <option value="1">销售</option>
+     <option value="2">财务</option>
+     
+    </select>
+    
+   </div>
+  </div>
+  
+  <div class="item">
+   <div class="form1">
+    <button class="btn-submit" id="account_btn" style="height:30px;">提交</button>
+   </div>
+   </div>
+   </form>
+ </div>
+ <div id="waringInformation">
+ <span></span>
+ </div>
+</div>
+<?php 
+}
+function display_account_info($action){
+	$account_array = get_account_information();
+	?>
+	<div class="proinput">
+ 	<h1><?php echo $action; ?></h1>
+ 	 <table width="900px" align="center" border='1' cellspacing='0'>
+ 	 <tr>
+ 	  <th>员工联系方式</th>
+ 	  <th>员工姓名</th>
+ 	  <th>员工职位</th>
+ 	 </tr>
+ 	  <?php
+ 	   foreach ($account_array as $accountId => $value){
+ 	   	
+ 	   		echo "<tr><td align='center'>".$value['accountId']."</td>
+					<td align='center'>".$value['name']."</td>
+					<td align='center'>".get_position($value['position'])."</td>
+					</tr>";
+ 	   	
+ 	   }
+ 	  ?>
+ 	 </table>
+ 	</div>
+	<?php 
 }
 ?>
