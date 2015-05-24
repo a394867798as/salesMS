@@ -68,6 +68,67 @@ function get_contract_state($name,$position){
 	
 	return $array_contract;
 }
+//获取不同状态下的合同信息
+function get_contract_state_list($state){
+	$conn = db_connect();
+	
+	//设置时区
+	date_default_timezone_set('PRC');
+	$nowtime = time();
+	$time = isset($_GET['time'])?$_GET['time']:6;
+	$contract_state_list_array = array();
+	//查询近6个月的数据
+	if($time == 6 ){
+		$time = 648000 * 24;
+		$selecttime = $nowtime - $time;
+		$selecttime = date("Y-m-d",$selecttime);
+		$query = "select * from contract
+				 where date > '".$selecttime."'
+				 order by date desc";
+	}
+	
+	$contract_result = $conn->query($query);
+	//遍历所有合同
+	while($contract_array = $contract_result->fetch_assoc()){
+		$contract_id = $contract_array['contract_id'];
+		//遍历该合同产品
+		$query = "select * from contract_list
+				  where contract_id = '".$contract_id."'";
+		$contract_list_result = $conn->query($query);
+		//遍历该合同的用户信息
+		$query = "select * from customer_information
+					  where customer_id = '".$contract_array['customer_id']."'";
+		$customer_result = $conn->query($query);
+		//将用户信息存入到数组中
+		foreach($customer_result->fetch_assoc() as $customer_key => $customer_value){
+			$contract_array[$customer_key] = $customer_value;
+		}
+		$checkvalue = 0;
+		//初始化变量
+		$contract_list_pro = array();
+		$i = 0;
+		while($pro_array = $contract_list_result->fetch_assoc()){
+			if($pro_array['state'] == $state){
+				//如果检测到相同的记录下来
+				$checkvalue ++;
+			}
+			$query = "select * from product_info
+					  where pro_id = '".$pro_array['pro_id']."'";
+			$pro_result = $conn->query($query);
+			foreach ($pro_result->fetch_assoc() as $pro_key => $pro_value){
+				$pro_array[$pro_key] = $pro_value;
+			}
+			$contract_array['pro_list'][$i] = $pro_array;
+			$i++;
+		}
+		//如果有一个合同项和需要状态是相同的，就存入到返回数组中
+		if($checkvalue > 0){
+			
+			$contract_state_list_array[$contract_id] =  $contract_array;
+		}
+	}
+	return $contract_state_list_array;
+}
 //公司信息
 function siswell_ifomation($select){
 	switch($select){
@@ -208,13 +269,13 @@ function insert_contract($post){
 	return $contract_id;
 }
 //获取数据库中contract的数据
-function get_contract_list($contract_id="", $state="", $time=6){
+function get_contract_list($contract_id="", $state="",$limit = ""){
 	//设置时区
 	date_default_timezone_set('PRC');
 	$nowtime = time();
+	$time = isset($_GET['time'])?$_GET['time']:6;
 	
-	
-	if($time == 6 && $contract_id == "" && $state == ""){
+	if($time == 6 && $contract_id == "" && $limit== "" ){
 		$time = 648000 * 24;
 		$selecttime = $nowtime - $time;
 		$selecttime = date("Y-m-d",$selecttime);
@@ -222,13 +283,19 @@ function get_contract_list($contract_id="", $state="", $time=6){
 				 where date > '".$selecttime."'
 				 order by date desc";
 	}
-	if($time == 6 && $contract_id != "" ){
+	if($time == 6 && $contract_id == "" && $limit != "" ){
 		$time = 648000 * 24;
 		$selecttime = $nowtime - $time;
 		$selecttime = date("Y-m-d",$selecttime);
 		$query = "select * from contract
 				 where date > '".$selecttime."'
-				 and contract_id = '".$contract_id."'";
+				 order by date desc
+				 limit 0,".$limit;
+	}
+	if( $contract_id != "" ){
+		
+		$query = "select * from contract
+				 where  contract_id = '".$contract_id."'";
 	}
 	return get_contract_query($query,$state);
 	
@@ -445,6 +512,7 @@ function check_billing_information($customer_id){
 function get_billing_information($contractid){
 	$conn = db_connect();
 	//查询该合同的客户id号
+	
 	$query = "select customer_id from contract 
 			  where contract_id = '".$contractid."'";
 	$result = $conn->query($query);

@@ -250,6 +250,7 @@ function display_main_all($username, $name,$action ="",$position, $state="", $co
 function display_index_html( $name,$action = "",$position){
 	//连接数据库，定义变量
 	$array_contract = get_contract_state($name, $position);
+	$contract_array = get_contract_list("","",10);
 	
 ?>
 	<div class="ly-c-0">
@@ -265,18 +266,22 @@ function display_index_html( $name,$action = "",$position){
          <li><a href='?action=查看合同&&state=1'>汇款已到账<em><?php print($array_contract[1]); ?></em></a></li>
          <li><a href='?action=查看合同&&state=2'>已定货<em><?php print($array_contract[2]); ?></em></a></li>
          <li><a href='?action=查看合同&&state=3'>已出库<em><?php print($array_contract[3]); ?></em></a></li>
-         <li><a href='?action=查看合同&&state=4'>需要开具发票<em><?php print($array_contract[4]); ?></em></a></li>
+         <li><a href='?action=查看合同&&state=4'>已开具发票<em><?php print($array_contract[4]); ?></em></a></li>
          </ul>
          <?php }else{?>
           <ul>
            <li><a href='?action=查看合同&&state=0'>已签订<em><?php print($array_contract[0]); ?></em></a></li>
-           <li><a href='?action=查看合同&&state=4'>需要开具发票<em><?php print($array_contract[4]); ?></em></a></li>
+           <li><a href='?action=查看合同&&state=3'>需要开具发票<em><?php print($array_contract[3]); ?></em></a></li>
          </ul>
          <?php }?>
         </div>
       </div>
     </div>
-   
+    <div style='background-color: #fff; width:1000px; padding:10px; margin-top:10px; border-radius:10px;'>
+    <h1 style="color: green;font-size:16px; width:200px; float:left">最近签署的合同</h1>
+    <h1 style="color: green;font-size:16px;width:200px;float:right;"><a href='?action=查看合同'>查看全部合同</a></h1>
+   <?php display_contract_array($contract_array) ?>
+   </div>
 <?php 
 }
 
@@ -697,9 +702,13 @@ function display_select_contract($action,$state = "",$contractid = ""){
 }
 //显示所有合同，并可以搜索
 function display_all_contract($state = ""){
-	
-	$contract_array_list = get_contract_list();
-	
+	if($state == ""){
+		$contract_array_list = get_contract_list();
+		
+	}else{
+		$contract_array_list = get_contract_state_list($state);
+		
+	}
 	?>
 	<div class="select-contract">
      <h2>查看合同</h2>
@@ -759,6 +768,7 @@ function display_contract_array($contract_array_list, $search = ""){
 	        <div class="contract-pro-list" style="margin-right:250px;">
 	         <?php 
 	        foreach ($value['pro_list'] as $pro_key => $pro_value){
+	        	
 	      	 ?>
 	         <div class="contract-pro-list-all" >
 	         <h1><?php echo  display_contract_state($pro_value['state']);?></h1>
