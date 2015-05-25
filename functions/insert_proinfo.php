@@ -26,6 +26,7 @@ $pro_id = $conn->real_escape_string(trim($pro_id));
 @$pro_name = $conn->real_escape_string(trim($pro_name));
 @$brand = $_POST['brand'];
 @$unit = $_POST['unit'];
+//判断变量是否为空
 if($pro_id != "" && $pro_name != "" && $brand != "" && $unit != ""){
 	$conn = db_connect();
 
