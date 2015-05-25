@@ -251,7 +251,7 @@ function display_index_html( $name,$action = "",$position){
 	//连接数据库，定义变量
 	$array_contract = get_contract_state($name, $position);
 	$contract_array = get_contract_list("","",10);
-	
+	echo "<script src='js/select_contract.js'></script>";
 ?>
 	<div class="ly-c-0">
 	  <div id="user_info">
@@ -420,6 +420,23 @@ function display_submit_contract($name,$position,$username,$state = ""){
 	if($state != ""){
 		echo "<script src='js/checkstate.js'></script>";
 	}
+	$pro_num = isset($_REQUEST['pro_num'])?$_REQUEST['pro_num']:"";
+	
+	if($pro_num == ""){
+		?>
+		<div class="proinput">
+ 		<h1>输入合同含有几种型号产品</h1>
+ 		<form action='?action=发布合同' method='post'>
+ 		 <table style='margin: 50px;'>
+ 		  <tr>
+ 		   <td>请输入要“发布合同”有多少项产品：<input type="number" min='1' max= '10' required value='1' name='pro_num' /></td>
+ 		   <td><button>提交</button></td>
+ 		  </tr>
+ 		 </table>
+ 		</form>
+ 		</div>
+		<?php 
+	}else{
 ?>
 <script src="js/create_contract.js"></script>
 <div class="contractinput">
@@ -501,7 +518,7 @@ function display_submit_contract($name,$position,$username,$state = ""){
    <div class="contract_pro_list">
    
    <?php
-    for($i = 0; $i<3; $i++){
+    for($i = 0; $i<$pro_num + 1; $i++){
 		if($i == 0){
    ?>
     <ul>
@@ -587,6 +604,7 @@ function display_submit_contract($name,$position,$username,$state = ""){
 </div>
 
 <?php 
+	}
 }
 //如果产品不存在，插入新产品
 function insertTypeForm($state){

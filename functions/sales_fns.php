@@ -220,11 +220,12 @@ function insert_contract($post){
 	$result = $conn -> query($query) or die($conn->error);
 	if($result->num_rows > 0){
 		$state = json_encode($post);
-		header("Location:../?action=发布合同&&state=".$state);
+		$pro_num = $pro_count-1;
+		header("Location:../?action=发布合同&&state=".$state."&&pro_num=".$pro_num);
 	}
 	//插入合同信息
 	$query = "insert into contract
-		  values('".$contract_id."', '".$customer_id."', '".$contract_count."', '".$accountId."','".$contract_date."', NULL)";
+		  values('".$contract_id."', '".$customer_id."', '".$contract_count."', '".$accountId."','".$contract_date."', NULL,NULL)";
 	
 	$result = $conn->query($query) or die($conn->error);
 	if(!$result){
@@ -245,7 +246,8 @@ function insert_contract($post){
 		$contract_id = $contract_object->contract_id;
 	}
 	//插入合同产品列表
-	for($i=0; $i<$pro_count; $i++){
+	echo $pro_count;
+	for($i=0; $i<$pro_count-1; $i++){
 		if(isset(${"type_".$i})){
 			$type = ${"type_".$i};
 			$unit = ${"unit_".$i};
