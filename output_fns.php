@@ -545,9 +545,9 @@ function display_submit_contract($name,$position,$username,$state = ""){
      </li>
      <li><input type="text" name="qty_<?php echo $i; ?>" id="qty_<?php echo $i; ?>"  class="qty" required style="width:100px;" /></li>
      
-     <li><input  type="text" name="Uprice_<?php echo $i; ?>" id="Uprice_<?php echo $i; ?>" class="Uprice" required style="width:150px;" placeholder="0.00"/></li>
+     <li><input  type="text" name="Uprice_<?php echo $i; ?>" id="Uprice_<?php echo $i; ?>" class="Uprice" required style="width:140px;" placeholder="0.00"/></li>
      <li>
-     <input type="text" name="extension_<?php echo $i; ?>" class="extension" id="extension_<?php echo $i; ?>" required style="width:150px;" placeholder="0.00" readonly />
+     <input type="text" name="extension_<?php echo $i; ?>" class="extension" id="extension_<?php echo $i; ?>" required style="width:140px;" placeholder="0.00" readonly />
      </li>
     </ul>
     <?php
@@ -577,9 +577,9 @@ function display_submit_contract($name,$position,$username,$state = ""){
      </li>
      <li><input type="text" name="qty_<?php echo $i; ?>" id="qty_<?php echo $i; ?>"  class="qty" style="width:100px;" /></li>
      
-     <li><input  type="text" name="Uprice_<?php echo $i; ?>" id="Uprice_<?php echo $i; ?>" class="Uprice"  style="width:150px;" placeholder="0.00"/></li>
+     <li><input  type="text" name="Uprice_<?php echo $i; ?>" id="Uprice_<?php echo $i; ?>" class="Uprice"  style="width:140px;" placeholder="0.00"/></li>
      <li>
-     <input type="text" name="extension_<?php echo $i; ?>" class="extension" id="extension_<?php echo $i; ?>"  style="width:150px;" placeholder="0.00" readonly />
+     <input type="text" name="extension_<?php echo $i; ?>" class="extension" id="extension_<?php echo $i; ?>"  style="width:140px;" placeholder="0.00" readonly />
      </li>
     </ul>        
 <?php
@@ -587,7 +587,7 @@ function display_submit_contract($name,$position,$username,$state = ""){
     }
 	?>
     <ul>
-     <li style="width:962px; border:1px solid #ccc;">
+     <li style="width:938px; border:1px solid #ccc;">
      总价（含17%增值税人民币价格）：
      <input type="text" id="contract_count" name="contract_count" style="float:right; width:150px; border:0px" placeholder="0.00" readonly />
      </li>
@@ -702,11 +702,27 @@ function display_loading(){
 function display_select_contract($action,$state = "",$contractid = ""){
     echo "<script src='js/select_contract.js'></script>";
 	if($contractid != "" && $state == ""){
-		
+		//echo str_pad('', 1024);//使缓冲区溢出
+		//ob_start();//打开缓冲区
 		display_contract($contractid);
+		//将函数display_contract输出到缓存区
+		//$string = ob_get_contents();
+		/*$print_html = "<html>
+						<header>
+						<link href='css/index.css' rel='stylesheet' type='text/css'>
+						</header><body>";
+		$print_html .= $string;
+		$print_html .="</body></html>";
+		//先将
+		file_put_contents($contractid.".html", $print_html);
+		
+		ob_flush();
+		ob_end_clean();
+		*/
 	}elseif($contractid != "" && $state == "all"){
 		
 		display_contract($contractid,$state);
+		
 		
 	}
 	if($contractid == "" && $state != ""){

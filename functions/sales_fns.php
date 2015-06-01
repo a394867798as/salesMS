@@ -164,7 +164,7 @@ function insert_contract($post){
 	
 	if(empty($contract_id)){
 		
-		header("refresh:5;url=../?action=fabuhetong");
+		header("refresh:3;url=../?action=fabuhetong");
 	}
 	$conn->autocommit(FALSE);//关闭系统自动提交事务
 	
@@ -215,8 +215,7 @@ function insert_contract($post){
 	$customer_id = $customer_array['customer_id'];
 	//检测合同号
 	$query = "select contract_id from contract
-		  where contract_id = '".$contract_id."'
-		  and customer_id = '".$customer_id."'";
+		  where contract_id = '".$contract_id."'";
 	$result = $conn -> query($query) or die($conn->error);
 	if($result->num_rows > 0){
 		$state = json_encode($post);
