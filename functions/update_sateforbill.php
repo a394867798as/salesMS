@@ -1,4 +1,5 @@
 <?php
+//更新合同产品开票状态，并记录开票时间
 include '../include_fns.php';
 $contract_id = $_GET['contractid'];
 echo $contract_id;

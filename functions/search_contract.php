@@ -1,4 +1,5 @@
 <?php
+//搜索合同是的脚本
 include '../include_fns.php';
 @$search = $_GET['searchcontract'];
 date_default_timezone_set('prc');

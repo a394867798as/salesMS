@@ -1,4 +1,5 @@
 <?php
+//更新合同产品状态脚本
 include '../include_fns.php';
 @$state = $_POST['state'];
 @$pro_id = $_POST['pro_id'];

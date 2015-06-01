@@ -1311,6 +1311,7 @@ function display_customer_information($action,$customerid = "",$page = ""){
 </div>
 <?php
 }
+//查询客户数据表，并列出客户的信息
 function display_customer_info($customerid = "",$page = ""){
 	
 	if($customerid == ""){
@@ -1430,6 +1431,7 @@ function display_customer_info($customerid = "",$page = ""){
     <?php
 	}
 }
+//分页函数
 function fenye_button($page = "",$count_page = ""){
 	echo "<div class='fenye' style='margin:20px 0 1px 0; '>";
 		if($page>1 && $page<$count_page){
@@ -1451,6 +1453,7 @@ function fenye_button($page = "",$count_page = ""){
 		}
         echo  "</div>";
 }
+//输出统计信息
 function display_all_tongjixinxi($action,$state = ""){
 	
 		
@@ -1462,6 +1465,7 @@ function display_all_tongjixinxi($action,$state = ""){
         <?php
 
 }
+//查询数据库，输入相应的统计信息
 function show_tongji_information($action,$state = ""){
 	if($state == ""){
 		$checkdate = "2014-12-31";
@@ -1823,6 +1827,7 @@ function display_bill_out($action,$contractid = ""){
 		echo "</div>";
 	}
 }
+//输出添加新员工的页面信息
 function display_staff_insert($action){
 	?>
 <script src="js/insert_account.js"></script>
@@ -1869,6 +1874,7 @@ function display_staff_insert($action){
 </div>
 <?php 
 }
+//输出员工信息
 function display_account_info($action){
 	$account_array = get_account_information();
 	?>

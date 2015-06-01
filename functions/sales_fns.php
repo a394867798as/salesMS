@@ -148,6 +148,7 @@ function siswell_ifomation($select){
 			return NULL;
 	}
 }
+//将发布合同的内容插入到合同数据表和合同列表数据表中
 function insert_contract($post){
 	$conn = db_connect();
 	
@@ -191,6 +192,7 @@ function insert_contract($post){
 		}
 	
 	}
+	//如果检测到收票地址不为空，则更新客户数据表，将用户收票地址更新到该用户信息中
 	if(isset($buy_billing) && !empty($result->num_rows) ){
 	
 		$customer_array = $result->fetch_assoc();
@@ -349,6 +351,7 @@ function get_contract_query($var,$state = ""){
 	$conn->close();
 	return $contract_array_list;
 }
+//根据合同产品的状态给出相应的信息
 function display_contract_state($state){
 	switch ($state){
 		case 0:
@@ -371,6 +374,7 @@ function display_contract_state($state){
 		 	break;
 	}
 }
+//将搜索的关键字标红
 function get_search_value($value, $search = ""){
 	if($search == ""){
 		return $value;

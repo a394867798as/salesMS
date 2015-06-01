@@ -1,4 +1,5 @@
 <?php
+//搜索输入搜索客户名称的客户
 include "../include_fns.php";
 $customerName = $_GET['companyname'];
 

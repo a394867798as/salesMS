@@ -1,4 +1,5 @@
 <?php
+//修改用户信息的脚本
 include '../include_fns.php';
 foreach ($_POST as $key=>$value){
 	$$key = $value;

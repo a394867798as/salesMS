@@ -1,4 +1,5 @@
 <?php
+//输入所有的客户信息
 include '../include_fns.php';
 $search = $_POST['search'];
 $query = "select * from customer_information

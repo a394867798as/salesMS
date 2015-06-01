@@ -1,4 +1,5 @@
 <?php
+//修改产品信息的脚本
 include '../include_fns.php';
 $id = $_POST['id'];
 $pro_id = $_POST['pro_id'];

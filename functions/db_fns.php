@@ -1,4 +1,5 @@
 <?php
+//连接到company数据库
 function db_connect(){
 	$result = new mysqli('localhost','root','123456','company');
 	$result->query("set names utf8");
