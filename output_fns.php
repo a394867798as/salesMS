@@ -1481,7 +1481,7 @@ function show_tongji_information($action,$state = ""){
 				  where date>'".$checkdate."'";
 		$query = "select pro_id,count(pro_id),sum(pro_price) from contract_list
  		 		  where contract_id IN (".$query1.")
-				  group by pro_id";
+				  group by pro_id order by count(pro_id) desc";
 		$result = $conn->query($query) or die($conn->error);
 		$contract_procount_array = array();
 		while($array = $result->fetch_assoc()){
