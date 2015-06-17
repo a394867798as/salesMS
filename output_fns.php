@@ -1479,9 +1479,9 @@ function show_tongji_information($action,$state = ""){
 		//使用关联查询满足合同列表条件的合同产品列表的统计信息
 		$query1 = "select contract_id from contract
 				  where date>'".$checkdate."'";
-		$query = "select pro_id,count(pro_id),sum(pro_price) from contract_list
+		$query = "select pro_id,sum(quantity),sum(pro_price*quantity) from contract_list
  		 		  where contract_id IN (".$query1.")
-				  group by pro_id order by count(pro_id) desc";
+				  group by pro_id order by sum(quantity) desc";
 		$result = $conn->query($query) or die($conn->error);
 		$contract_procount_array = array();
 		while($array = $result->fetch_assoc()){
@@ -1509,8 +1509,8 @@ function show_tongji_information($action,$state = ""){
              <tr>
               <td align="center"><?php echo $i; ?></td>
               <td align="left"><?php echo $value['pro_id'] ?></td>
-              <td align="center"><?php echo $value['count(pro_id)']; ?></td>
-              <td align="right"><?php echo $value['sum(pro_price)'];?></td>
+              <td align="center"><?php echo $value['sum(quantity)']; ?></td>
+              <td align="right"><?php echo $value['sum(pro_price*quantity)'];?></td>
              </tr>
             <?php 
 			$i++;
